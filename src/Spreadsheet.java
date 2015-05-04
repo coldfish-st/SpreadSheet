@@ -102,6 +102,7 @@ public class Spreadsheet implements Runnable, ActionListener,
 		menuitem.setActionCommand(command);
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getActionCommand().equals(EXITCOMMAND)) {
@@ -123,6 +124,11 @@ public class Spreadsheet implements Runnable, ActionListener,
 		} else if (ae.getActionCommand().equals(EDITFUNCTIONCOMMAND)) {
 			functioneditor.setVisible(true);
 
+		} else if (ae.getActionCommand().equals("CALCULATE")) {
+			CellIndex index = worksheetview.getSelectedIndex();
+			worksheet.lookup(index).calcuate(worksheet);
+			//cellEditTextField.setText(worksheet.lookup(index).show());
+			//System.out.println("1");
 		}
 	}
 

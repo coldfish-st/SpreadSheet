@@ -17,17 +17,20 @@ public class Cell {
 		calculatedValue = null;
 	}
 
+	
 	public Cell() {
 		text = "";
 		calculatedValue = null;
 	}
-
+	
 	public Double value() {
 		return calculatedValue;
 	}
 
 	public void calcuate(WorkSheet worksheet) {
 		try {
+			System.out.println("Test         " + text);
+			
 			calculatedValue = Expression.tokenizeParseShowEvaluate(text);
 			
 			//calculatedValue = Double.parseDouble(text);

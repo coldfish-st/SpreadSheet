@@ -27,6 +27,7 @@ public abstract class Expression {
 	 */
 	
 	public static double tokenizeParseShowEvaluate(String text) {
+		System.out.println(text);
 		Tokenizer t = new SimpleTokenizer(text);
 		Expression e = Expression.parse(t);
 		return e.evaluate();
