@@ -1,3 +1,5 @@
+import expression.Expression;
+
 /**
  * Cell - an object of this class holds the data of a single cell. 
  * 
@@ -26,7 +28,9 @@ public class Cell {
 
 	public void calcuate(WorkSheet worksheet) {
 		try {
-			calculatedValue = Double.parseDouble(text);
+			calculatedValue = Expression.tokenizeParseShowEvaluate(text);
+			
+			//calculatedValue = Double.parseDouble(text);
 		} catch (NumberFormatException nfe) {
 			calculatedValue = null;
 		}
