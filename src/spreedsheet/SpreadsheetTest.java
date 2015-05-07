@@ -1,3 +1,4 @@
+package spreedsheet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -19,34 +20,34 @@ import org.junit.Test;
 public class SpreadsheetTest  {
 
 	protected static final String sumandmaxfunctions = "SUM(array values) {\n" +
-	                                                   "  double sum;" +
-			                                           "  int i;" +
-	                                                   "  sum = 0.0;" +
-			                                           "  i = 0;" +
-	                                                   "  while (i < #values) {" +
-	                                                   "     sum = sum + values[i];" +
-	                                                   "  }" +
-	                                                   "  return sum;" +
-	                                                   "}" + 
-	                                                   "MAX(array values) {\n" +
-	                                                   "  double max; " +
-	                                                   "  int i;" +
-	                                                   "  max = values[0];" +
-	                                                   "  i = 1;" +
-	                                                   "  while (i < #values) {" +
-	                                                   "     if (values[i] > max) {" +
-	                                                   "        max = values[i];" +
-	                                                   "     }" +
-	                                                   "  }" +
-	                                                   "  return max;" +
-	                                                   "}";
+			"  double sum;" +
+			"  int i;" +
+			"  sum = 0.0;" +
+			"  i = 0;" +
+			"  while (i < #values) {" +
+			"     sum = sum + values[i];" +
+			"  }" +
+			"  return sum;" +
+			"}" + 
+			"MAX(array values) {\n" +
+			"  double max; " +
+			"  int i;" +
+			"  max = values[0];" +
+			"  i = 1;" +
+			"  while (i < #values) {" +
+			"     if (values[i] > max) {" +
+			"        max = values[i];" +
+			"     }" +
+			"  }" +
+			"  return max;" +
+			"}";
 	Spreadsheet gui;
 
 	@Test
 	public void testSimple() {
 		gui = new Spreadsheet();
 		try {
-			
+
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
@@ -70,7 +71,7 @@ public class SpreadsheetTest  {
 	public void testExpressionCal() {
 		gui = new Spreadsheet();
 		try {
-			
+
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
@@ -96,7 +97,7 @@ public class SpreadsheetTest  {
 	public void testFunctionCal() {
 		gui = new Spreadsheet();
 		try {
-			
+
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {

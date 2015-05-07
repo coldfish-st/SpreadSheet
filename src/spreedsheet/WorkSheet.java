@@ -1,3 +1,4 @@
+package spreedsheet;
 import java.io.File;
 import java.util.HashMap;
 
@@ -18,7 +19,7 @@ public class WorkSheet {
 	private static final String FUNCTIONTEXT = "FunctionText";
 	private static final String FUNCTIONS = "Functions";
 
-	private HashMap<CellIndex, Cell> tabledata;
+	public HashMap<CellIndex, Cell> tabledata;
 	// For simplicity the table data is just stored as a hashmap from a cell's
 	// index to the
 	// cells data. Cells that are not yet part of this mapping are assumed

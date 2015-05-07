@@ -1,3 +1,4 @@
+package spreedsheet;
 import expression.Expression;
 
 /**
@@ -31,7 +32,7 @@ public class Cell {
 		try {
 			System.out.println("Test         " + text);
 			
-			calculatedValue = Expression.tokenizeParseShowEvaluate(text);
+			calculatedValue = Expression.tokenizeParseShowEvaluate(text, worksheet);
 			
 			//calculatedValue = Double.parseDouble(text);
 		} catch (NumberFormatException nfe) {

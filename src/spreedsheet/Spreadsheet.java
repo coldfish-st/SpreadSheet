@@ -1,3 +1,4 @@
+package spreedsheet;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -127,7 +128,8 @@ public class Spreadsheet implements Runnable, ActionListener,
 		} else if (ae.getActionCommand().equals("CALCULATE")) {
 			CellIndex index = worksheetview.getSelectedIndex();
 			worksheet.lookup(index).calcuate(worksheet);
-			//cellEditTextField.setText(worksheet.lookup(index).show());
+			worksheetview.repaint();
+			cellEditTextField.setText(worksheet.lookup(index).show());
 			//System.out.println("1");
 		}
 	}
