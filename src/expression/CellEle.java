@@ -17,12 +17,14 @@ public class CellEle extends Expression {
 	}
 	@Override
 	public double evaluate() {
-		System.out.println(index);
+		//System.out.println(index);
 		CellIndex cellin = new CellIndex(index);
 		
 		Cell cell = worksheet.tabledata.get(cellin);
+		cell.calcuate(worksheet); // used to get the value
 		
 		Double value = cell.value(); // need to calculate?
+		
 		if (value == null) {
 			value = (double) 0;
 		}

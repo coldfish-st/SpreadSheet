@@ -30,15 +30,16 @@ public class Cell {
 
 	public void calcuate(WorkSheet worksheet) {
 		try {
-			System.out.println("Test         " + text);
+						
+			//calculatedValue = Expression.tokenizeParseShowEvaluate(text, worksheet);
 			
-			calculatedValue = Expression.tokenizeParseShowEvaluate(text, worksheet);
-			
-			//calculatedValue = Double.parseDouble(text);
+			calculatedValue = Double.parseDouble(text);
 		} catch (NumberFormatException nfe) {
 			calculatedValue = null;
 		}
 	}
+	
+	
 
 	public String show() { // this is what is viewed in each Cell
 		return calculatedValue == null ? text : calculatedValue.toString();

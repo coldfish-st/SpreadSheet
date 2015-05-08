@@ -37,8 +37,7 @@ public class WorksheetView extends JTable implements TableModel {
 		this.setCellSelectionEnabled(true);
 		this.setRowSelectionAllowed(false);
 		this.setColumnSelectionAllowed(false);
-		this.getColumnModel().getSelectionModel()
-				.addListSelectionListener(this);
+		this.getColumnModel().getSelectionModel().addListSelectionListener(this);
 		(this.getSelectionModel()).addListSelectionListener(this);
 
 		this.getSelectionModel().setSelectionMode(
@@ -71,14 +70,9 @@ public class WorksheetView extends JTable implements TableModel {
 		}
 		return new TableCellRenderer() {
 			@Override
-			public Component getTableCellRendererComponent(JTable table,
-					Object value, boolean isSelected, boolean hasFocus,
-					int row, int column) {
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				JLabel lab = new JLabel("" + ((Cell) value).show());
-				if (isSelected
-						|| hasFocus
-						|| (table.getSelectedColumn() == column && table
-								.getSelectedRow() == row)) {
+				if (isSelected|| hasFocus|| (table.getSelectedColumn() == column && table.getSelectedRow() == row)) {
 					lab.setOpaque(true);
 					lab.setBackground(Color.lightGray);
 				}

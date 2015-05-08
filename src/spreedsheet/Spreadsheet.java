@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,6 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import expression.Expression;
+
 public class Spreadsheet implements Runnable, ActionListener,
 		SelectionObserver, DocumentListener {
 
@@ -33,6 +36,8 @@ public class Spreadsheet implements Runnable, ActionListener,
 	private static final String SAVECOMMAND = "savecommand";
 	private static final String OPENCOMMAND = "opencommand";
 	private static final String EDITFUNCTIONCOMMAND = "editfunctioncommand";
+	
+	public HashMap<CellIndex, String> functions = new HashMap<CellIndex, String>();
 
 	JFrame jframe;
 	WorksheetView worksheetview;
@@ -83,6 +88,9 @@ public class Spreadsheet implements Runnable, ActionListener,
 		toolarea.add(selectedCellLabel);
 		cellEditTextField = new JTextField(20);
 		cellEditTextField.getDocument().addDocumentListener(this);
+		
+		
+		
 		toolarea.add(cellEditTextField);
 
 		functioneditor = new FunctionEditor(worksheet);
@@ -126,8 +134,17 @@ public class Spreadsheet implements Runnable, ActionListener,
 
 		} else if (ae.getActionCommand().equals("CALCULATE")) {
 			CellIndex index = worksheetview.getSelectedIndex();
-			worksheet.lookup(index).calcuate(worksheet);
-			worksheetview.repaint();
+			String func = cellEditTextField.getText();
+			if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
+				double result = Expression.tokenizeParseShowEvaluate(func, worksheet);
+				worksheet.lookup(index).setText(Double.toString(result));
+				functions.put(index, func);
+				worksheetview.repaint();
+			} else {
+				worksheetview.repaint();
+			}
+			//worksheet.lookup(index).calcuate(worksheet);
+			
 			//cellEditTextField.setText(worksheet.lookup(index).show());
 			//System.out.println("1");
 		}
@@ -147,40 +164,77 @@ public class Spreadsheet implements Runnable, ActionListener,
 	public void update() {
 		CellIndex index = worksheetview.getSelectedIndex();
 		selectedCellLabel.setText(index.show());
-		cellEditTextField.setText(worksheet.lookup(index).show());
+		
+		if (!functions.containsKey(index)) {
+			cellEditTextField.setText(worksheet.lookup(index).show());
+		} else {
+			cellEditTextField.setText(functions.get(index));
+			
+		}
+		
+		//cellEditTextField.setText(worksheet.lookup(index).show());
 		jframe.repaint();
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent arg0) {
 		textChanged();
+		
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent arg0) {
 		textChanged();
+		
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent arg0) {
 		textChanged();
+		
 	}
 
 	private void textChanged() {
 		CellIndex index = worksheetview.getSelectedIndex();
 		Cell current = worksheet.lookup(index);
-		current.setText(cellEditTextField.getText());
-
+		
+		if (!functions.containsKey(index)) {
+			current.setText(cellEditTextField.getText());
+			current.calcuate(worksheet);
+			worksheetview.repaint();
+		} else {
+			String func = functions.get(index);
+			current.setText(Double.toString(Expression.tokenizeParseShowEvaluate(func, worksheet)));
+			worksheetview.repaint();
+			if (!cellEditTextField.getText().equals(func)) {
+				functions.remove(index);
+			}
+		}
+		
+		
+		//current.setText(cellEditTextField.getText());
+		
+		System.out.println(current.getText());
+		System.out.println("test");
+		worksheetview.repaint();
+		//current.setText(cellEditTextField.getText());
+		
+		
+		//System.out.println("This is the input "+ worksheet.lookup(index).getText()+"    "+index.toString());
+		/*
 		if (worksheet.lookup(index).getText().equals("") ) {
 			worksheetview.repaint();
 		}  else if (worksheet.lookup(index).getText().charAt(0) == '=') {
-			
+			//CellIndex index1 = worksheetview.getSelectedIndex();
+			//CellIndex in = new CellIndex(2,3);
+
+			//cellEditTextField.setText(functions.get(worksheetview.getSelectedIndex()));
 		} else {
 			worksheet.lookup(index).calcuate(worksheet);
 			worksheetview.repaint();
 		}
-		
-		
+		worksheetview.repaint();
+		*/
 		
 	}
 }
