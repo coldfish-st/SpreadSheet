@@ -77,7 +77,9 @@ public class SpreadsheetTest  {
 				public void run() {
 					selectAndSet(2, 3, "Some Text");
 					selectAndSet(3, 3, "23.4");
+					//gui.calculateButton.doClick();
 					selectAndSet(4, 3, "34.1");
+					//gui.calculateButton.doClick();
 					selectAndSet(5, 3, "=2.6+C4*C5");
 					gui.calculateButton.doClick();
 				}

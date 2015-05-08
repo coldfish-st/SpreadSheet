@@ -150,8 +150,7 @@ public class WorksheetView extends JTable implements TableModel {
 	}
 
 	public CellIndex getSelectedIndex() {
-		return new CellIndex(this.getSelectedColumn() - 1,
-				this.getSelectedRow());
+		return new CellIndex(this.getSelectedColumn() - 1, this.getSelectedRow());
 	}
 
 	public void setWorksheet(WorkSheet worksheet) {

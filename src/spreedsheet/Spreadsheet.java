@@ -87,8 +87,7 @@ public class Spreadsheet implements Runnable, ActionListener,
 
 		functioneditor = new FunctionEditor(worksheet);
 
-		jframe.getContentPane().add(new JScrollPane(worksheetview),
-				BorderLayout.CENTER);
+		jframe.getContentPane().add(new JScrollPane(worksheetview), BorderLayout.CENTER);
 		jframe.getContentPane().add(toolarea, BorderLayout.PAGE_START);
 
 		jframe.setVisible(true);
@@ -129,7 +128,7 @@ public class Spreadsheet implements Runnable, ActionListener,
 			CellIndex index = worksheetview.getSelectedIndex();
 			worksheet.lookup(index).calcuate(worksheet);
 			worksheetview.repaint();
-			cellEditTextField.setText(worksheet.lookup(index).show());
+			//cellEditTextField.setText(worksheet.lookup(index).show());
 			//System.out.println("1");
 		}
 	}
@@ -171,6 +170,17 @@ public class Spreadsheet implements Runnable, ActionListener,
 		CellIndex index = worksheetview.getSelectedIndex();
 		Cell current = worksheet.lookup(index);
 		current.setText(cellEditTextField.getText());
-		worksheetview.repaint();
+
+		if (worksheet.lookup(index).getText().equals("") ) {
+			worksheetview.repaint();
+		}  else if (worksheet.lookup(index).getText().charAt(0) == '=') {
+			
+		} else {
+			worksheet.lookup(index).calcuate(worksheet);
+			worksheetview.repaint();
+		}
+		
+		
+		
 	}
 }
