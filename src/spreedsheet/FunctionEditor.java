@@ -28,7 +28,7 @@ public class FunctionEditor extends JDialog implements ActionListener {
 		this.setModal(true);
 		this.getContentPane().add(new JScrollPane(textarea), BorderLayout.CENTER);
 		this.getContentPane().add(closebutton, BorderLayout.PAGE_END);
-        this.pack();
+		this.pack();
 	}
 
 	public void setWorksheet(WorkSheet ws) {

@@ -18,8 +18,9 @@ import org.junit.Test;
  */
 
 public class SpreadsheetTest  {
-
-	protected static final String sumandmaxfunctions = "SUM(array values) {\n" +
+	 
+	protected static final String sumandmaxfunctions = 
+			"SUM(array values) {\n" +
 			"  double sum;" +
 			"  int i;" +
 			"  sum = 0.0;" +

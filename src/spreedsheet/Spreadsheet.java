@@ -135,7 +135,11 @@ public class Spreadsheet implements Runnable, ActionListener,
 		} else if (ae.getActionCommand().equals("CALCULATE")) {
 			CellIndex index = worksheetview.getSelectedIndex();
 			String func = cellEditTextField.getText();
-			if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
+			if (func.startsWith("=SUM")) {
+				System.out.println();
+			} else if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
+				
+				System.out.println(functioneditor.textarea.getText());
 				double result = Expression.tokenizeParseShowEvaluate(func, worksheet);
 				worksheet.lookup(index).setText(Double.toString(result));
 				functions.put(index, func);
