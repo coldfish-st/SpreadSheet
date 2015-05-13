@@ -20,25 +20,27 @@ import org.junit.Test;
 public class SpreadsheetTest  {
 	 
 	protected static final String sumandmaxfunctions = 
-			"SUM(array values) {\n" +
+			"SUM(values) {" +
 			"  double sum;" +
 			"  int i;" +
 			"  sum = 0.0;" +
 			"  i = 0;" +
-			"  while (i < #values) {" +
+			"  while (i < values.length) {" +
 			"     sum = sum + values[i];" +
+			"	i++;" +
 			"  }" +
 			"  return sum;" +
-			"}" + 
-			"MAX(array values) {\n" +
+			"}\n" + 
+			"MAX(values) {" +
 			"  double max; " +
 			"  int i;" +
 			"  max = values[0];" +
 			"  i = 1;" +
-			"  while (i < #values) {" +
+			"  while (i < values.length) {" +
 			"     if (values[i] > max) {" +
 			"        max = values[i];" +
 			"     }" +
+			"	i++;" +
 			"  }" +
 			"  return max;" +
 			"}";
@@ -121,6 +123,7 @@ public class SpreadsheetTest  {
 			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "3.3");
 			
 		} catch (InvocationTargetException e) {
+			
 			fail();
 		} catch (InterruptedException e) {
 			fail();

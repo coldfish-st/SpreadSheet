@@ -37,5 +37,10 @@ public class CellIndex {
    public String show() {
 	   return ((char) ('A' + (char) column)) + ""  + (row+1);
    }
-   
+   public int row() {
+	   return row;
+   }
+   public int column() {
+	   return column;
+   }
 }

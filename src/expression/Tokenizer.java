@@ -1,7 +1,6 @@
 package expression;
 
 
-import java.text.ParseException;
 
 /**
  * Tokenizer - this uses the StreamTokenizer class to make a simpler tokenizer
@@ -23,7 +22,7 @@ public abstract class Tokenizer {
 	public void parse(Object o) throws ParseException {
 		
 		if (current() == null || !current().equals(o))
-			throw new ParseException(null, 0);
+			throw new ParseException();
 		next();
 	}
 }

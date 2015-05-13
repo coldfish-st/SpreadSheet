@@ -3,6 +3,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -42,4 +45,6 @@ public class FunctionEditor extends JDialog implements ActionListener {
 	public void updateWorksheet() {
 		worksheet.setFunctions(textarea.getText());
 	}
+	
+	
 }

@@ -140,7 +140,13 @@ public class Spreadsheet implements Runnable, ActionListener,
 			} else if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
 				
 				System.out.println(functioneditor.textarea.getText());
-				double result = Expression.tokenizeParseShowEvaluate(func, worksheet);
+				double result = 0;
+                                try {
+	                                result = Expression.tokenizeParseShowEvaluate(func, worksheet);
+                                } catch (Exception e) {
+	                                // TODO Auto-generated catch block
+	                                e.printStackTrace();
+                                }
 				worksheet.lookup(index).setText(Double.toString(result));
 				functions.put(index, func);
 				worksheetview.repaint();
@@ -182,23 +188,38 @@ public class Spreadsheet implements Runnable, ActionListener,
 
 	@Override
 	public void changedUpdate(DocumentEvent arg0) {
-		textChanged();
+		try {
+	                textChanged();
+                } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+                }
 		
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent arg0) {
-		textChanged();
+		try {
+	                textChanged();
+                } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+                }
 		
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent arg0) {
-		textChanged();
+		try {
+	                textChanged();
+                } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+                }
 		
 	}
 
-	private void textChanged() {
+	private void textChanged() throws Exception {
 		CellIndex index = worksheetview.getSelectedIndex();
 		Cell current = worksheet.lookup(index);
 		

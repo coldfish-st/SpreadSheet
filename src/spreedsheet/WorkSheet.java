@@ -2,6 +2,10 @@ package spreedsheet;
 import java.io.File;
 import java.util.HashMap;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 /**
  * WorkSheet - this stores the information for the worksheet. This is made up of
  * all the cells. all the cells of the worksheet.
@@ -38,7 +42,7 @@ public class WorkSheet {
 	public Cell lookup(CellIndex index) {
 		Cell cell = tabledata.get(index);
 		if (cell == null) { // if the cell is not there then create it and add
-							// it to the mapping
+			// it to the mapping
 			cell = new Cell();
 			tabledata.put(index, cell);
 		}
@@ -92,5 +96,27 @@ public class WorkSheet {
 
 	private void put(String index, String text) {
 		tabledata.put(new CellIndex(index), new Cell(text));
+	}
+	
+	public double scriptFun(String func, double[] input) throws Exception {
+
+		ScriptEngineManager sem = new ScriptEngineManager();
+		ScriptEngine engine = sem.getEngineByName("javascript");
+
+		String funcAll = functions;
+		String[] parts;
+		parts = funcAll.split("\n");
+		String function = null;
+		for (int i = 0; i < parts.length; i++) {
+			if ( parts[i].startsWith(func))
+				function =parts[i];
+		}
+		System.out.println(function);
+		engine.eval("function "+function);
+		Invocable jsInvoke = (Invocable) engine;
+
+		Double result = (Double) jsInvoke.invokeFunction(func, input);
+		return result;
+
 	}
 }
