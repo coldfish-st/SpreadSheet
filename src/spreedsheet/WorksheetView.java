@@ -40,12 +40,10 @@ public class WorksheetView extends JTable implements TableModel {
 		this.getColumnModel().getSelectionModel().addListSelectionListener(this);
 		(this.getSelectionModel()).addListSelectionListener(this);
 
-		this.getSelectionModel().setSelectionMode(
-				ListSelectionModel.SINGLE_SELECTION);
+		this.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		for (int col = 0; col < NUMCOL + 1; col++) {
-			this.getColumnModel().getColumn(col)
-					.setPreferredWidth(col == 0 ? FIRSTCOLUMNWIDTH : COLUMNWIDTH);
+			this.getColumnModel().getColumn(col)	.setPreferredWidth(col == 0 ? FIRSTCOLUMNWIDTH : COLUMNWIDTH);
 		}
 	}
 

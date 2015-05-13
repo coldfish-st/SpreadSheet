@@ -170,7 +170,7 @@ public class Spreadsheet implements Runnable, ActionListener,
 		selectedCellLabel.setText(index.show());
 		
 		if (!functions.containsKey(index)) {
-			cellEditTextField.setText(worksheet.lookup(index).show());
+			cellEditTextField.setText(worksheet.lookup(index).getText());
 		} else {
 			cellEditTextField.setText(functions.get(index));
 			

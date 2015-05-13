@@ -114,16 +114,12 @@ public class SpreadsheetTest  {
 					gui.calculateButton.doClick();
 				}
 			});
-			assertEquals(gui.worksheet.lookup(new CellIndex("C3")).show(),
-					"1.1");
-			assertEquals(gui.worksheet.lookup(new CellIndex("C4")).show(),
-					"2.2");
-			assertEquals(gui.worksheet.lookup(new CellIndex("C5")).show(),
-					"3.3");
-			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(),
-					"6.6");
-			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(),
-					"3.3");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C3")).show(), "1.1");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C4")).show(), "2.2");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C5")).show(), "3.3");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "6.6");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "3.3");
+			
 		} catch (InvocationTargetException e) {
 			fail();
 		} catch (InterruptedException e) {

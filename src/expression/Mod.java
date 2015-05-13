@@ -1,49 +1,44 @@
 package expression;
 
-
-public class Minus extends Expression {
+public class Mod extends Expression {
 	Expression e1, e2;
-	
 	@Override
 	public double evaluate() {
 		
-		return e1.evaluate() - e2.evaluate();
+		return e1.evaluate() % e2.evaluate();
 	}
-
-	public Minus(Expression e1, Expression e2) {
+	
+	public Mod(Expression e1, Expression e2) {
 		super();
 		this.e1 = e1;
 		this.e2 = e2;
 	}
-	
+
 	@Override
 	public String show() {
 		
-		return  "(" + e1.show() + " - " + e2.show() + ")";
+		return "(" + e1.show() + " % " + e2.show() + ")";
 	}
 
 	@Override
         Expression insertsub(Expression term) {
-	        // TODO Auto-generated method stub
-	        return new Minus(e1.insertsub(term), e2);
+	       
+	        return new Minus(term, this);
         }
-
 	@Override
         Expression insertadd(Expression term) {
 	        // TODO Auto-generated method stub
-	        return new Minus(e1.insertadd(term), e2);
+	        return new Addition(term, this);
         }
-
 	@Override
         Expression insertmult(Expression ope) {
 	        // TODO Auto-generated method stub
-	        return new Minus(e1.insertmult(ope), e2);
+	        return new Multiplication(ope, this);
         }
-
 	@Override
         Expression insertdiv(Expression ope) {
 	        // TODO Auto-generated method stub
-	        return new Minus(e1.insertdiv(ope), e2);
+	        return new Divide(ope, this);
         }
 
 }

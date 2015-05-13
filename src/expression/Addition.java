@@ -29,4 +29,28 @@ public class Addition extends Expression {
 		return "(" + e1.show() + " + " + e2.show() + ")";
 	}
 
+	@Override
+        Expression insertsub(Expression term) {
+	        
+	        return new Addition(e1.insertsub(term), e2);
+        }
+
+	@Override
+        Expression insertadd(Expression term) {
+	        // TODO Auto-generated method stub
+	        return new Addition(e1.insertadd(term), e2);
+        }
+
+	@Override
+        Expression insertmult(Expression ope) {
+	        
+	        return new Addition(e1.insertmult(ope), e2);
+        }
+
+	@Override
+        Expression insertdiv(Expression ope) {
+	        // TODO Auto-generated method stub
+	        return new Addition(e1.insertdiv(ope), e2);
+        }
+
 }

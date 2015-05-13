@@ -1,6 +1,5 @@
 package expression;
 
-
 import spreedsheet.WorkSheet;
 
 
@@ -35,291 +34,109 @@ public abstract class Expression {
 		return e.evaluate();
 	}
 
+	/*
+	 * 
+	 * The below methods parse the grammar:
+	 * 
+	 * <exp> ::= <term> | <term> + <exp> | <term> - <exp>
+	 * <term> ::= <ope> | <ope> * <term>  | <ope> / <term>
+	 * <ope> :: = <val> | <val> ^ <ope> | <val> % <ope> 
+	 * <val> ::= <num> |  ( <exp> )
+	 */
 
-	public static Expression parse(Tokenizer tok, WorkSheet worksheet) {
-		
-		if (tok.current().equals("=")) {
-			tok.next();
+	public static Expression parse(Tokenizer t, WorkSheet worksheet) {
+		if (t.current().equals("=")) {
+			t.next();
 		}
-		Object t = tok.current();
-		if (tok.current() instanceof Double) {
-			double num = (double) tok.current();
-			Expression exp1 = new Number(num);
-			tok.next();
-			if (tok.current() != null && tok.current().equals("+")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Addition(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("-")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Minus(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("*")) {
-				tok.next();
-				if (tok.current() instanceof Double) {
-					double temp = (double) tok.current();
-					Expression exptemp = new Number(temp);
-					Expression exp = new Multiplication(exp1, exptemp);
-					tok.next();
-					if (tok.current() != null && tok.current().equals("+")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Addition(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("-")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Minus(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("*")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);// 此处还有问题，需要好好思索一下， *法如何能做到二级？
-						return new Multiplication(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("/")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Divide(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("^")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Power(exp, exp2);
-					} else {
-						return exp;
-					}
-				} else{
-					Expression exp2 = parse(tok, worksheet);
-					return new Multiplication(exp1, exp2);
-				}
-			} else if (tok.current() != null && tok.current().equals("/")) {
-				tok.next();
-				if (tok.current() instanceof Double) {
-					double temp = (double) tok.current();
-					Expression exptemp = new Number(temp);
-					Expression exp = new Divide(exp1, exptemp);
-					tok.next();
-					if (tok.current() != null && tok.current().equals("+")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Addition(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("-")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Minus(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("*")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Multiplication(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("/")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Divide(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("^")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Power(exp, exp2);
-					} else {
-						return exp;
-					}
-				} else{
-					Expression exp2 = parse(tok, worksheet);
-					return new Divide(exp1, exp2);
-				}
-			} else if (tok.current() != null && tok.current().equals("^")) {
-				tok.next();
-				if (tok.current() instanceof Double) {
-					double temp = (double) tok.current();
-					Expression exptemp = new Number(temp);
-					Expression exp = new Power(exp1, exptemp);
-					tok.next();
-					if (tok.current() != null && tok.current().equals("+")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Addition(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("-")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Minus(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("*")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Multiplication(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("/")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Divide(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("^")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Power(exp, exp2);
-					} else {
-						return exp;
-					}
-				} else{
-					Expression exp2 = parse(tok, worksheet);
-					return new Power(exp1, exp2);
-				}
-			} else {
-				return new Number(num);
-			}
-		} else if (tok.current() != null && tok.current().equals("(")) {
-			tok.next();
-			Expression exp1 = parse(tok, worksheet);
-			tok.next();
-			if (tok.current() != null && tok.current().equals("+")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Addition(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("-")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Minus(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("*")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Multiplication(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("/")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Divide(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("^")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Power(exp1, exp2);
-			} else {
-				return exp1;
-			}
-		} else if (tok.current() != null && tok.current().equals("-")) {
-			tok.next();
-			Expression exp = parse(tok, worksheet);
-			return new Inverse(exp);
+		Expression term = parseTerm(t, worksheet);
+		if (t.current() != null && t.current().equals("+")) {
+			t.next();
+			Expression exp2 = parse(t, worksheet);
+			return exp2.insertadd(term);
+		} else if (t.current() != null && t.current().equals("-")) {
+			t.next();
+			Expression exp2 = parse(t, worksheet);
+			return exp2.insertsub(term);
 
-		} else if (tok.current() != null && tok.current().equals("e")) {
+		} else{
+			return term;
+		}
+			
+	}
+	
+	abstract Expression insertsub(Expression term);
+	abstract Expression insertadd(Expression term);
+	
+	
+	public static Expression parseTerm(Tokenizer t, WorkSheet worksheet) {
+		Expression ope = parseOpe(t, worksheet);
+		if (t.current() != null && t.current().equals("*")) {
+			t.next();
+			Expression exp2 = parseTerm(t, worksheet);
+			return exp2.insertmult(ope);
+		} else if (t.current() != null && t.current().equals("/")) {
+			t.next();
+			Expression exp2 = parseTerm(t, worksheet);
+			return exp2.insertdiv(ope);
+
+		} else{
+			return ope;
+		}
+	}
+	
+	
+	abstract Expression insertmult(Expression ope);
+	abstract Expression insertdiv(Expression ope);
+	
+	public static Expression parseOpe(Tokenizer t, WorkSheet worksheet) {
+		Expression val = parseVal(t, worksheet);
+		if (t.current() != null && t.current().equals("^")) {
+			t.next();
+			Expression exp2 = parseOpe(t, worksheet);
+			return new Power(val, exp2);
+		} else if (t.current() != null && t.current().equals("%")) {
+			t.next();
+			Expression exp2 = parseOpe(t, worksheet);
+			return new Mod(val, exp2);
+		} else {
+			return val;
+		}
+			
+	}
+	
+	public static Expression parseVal(Tokenizer t, WorkSheet worksheet) {
+		if (t.current() != null && t.current().equals("-")){
+			t.next();
+			Expression exp2 = parseVal(t, worksheet);
+			//t.next();
+			return new Inverse(exp2);
+		} else if (t.current() != null && t.current().equals("(")) {
+			t.next();
+			Expression exp2 = parse(t, worksheet);
+			t.next(); // consume the ")" - not we should really check that it is a ")"
+			return new BracExp(exp2);
+		} else if (t.current() instanceof String && Character.isUpperCase(((String) t.current()).charAt(0)) && 
+				Character.isDigit(((String) t.current()).charAt(1))) {
+			String cell = (String) t.current();
+			t.next();
+			return new CellEle(cell, worksheet);
+		} else if (t.current() != null && t.current().equals("e")) {
+			t.next();
 			return new E();
 
-		} else if(tok.current() != null && tok.current().equals("p")) {
+		} else if(t.current() != null && t.current().equals("p")) {
+			t.next();
 			return new Pi();
 
-		} else if (t instanceof String && Character.isUpperCase(((String) t).charAt(0))) {
-			Expression exp1 =  new CellEle((String) t, worksheet);
-			tok.next();
-			if (tok.current() != null && tok.current().equals("+")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Addition(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("-")) {
-				tok.next();
-				Expression exp2 = parse(tok, worksheet);
-				return new Minus(exp1, exp2);
-			} else if (tok.current() != null && tok.current().equals("*")) {
-				tok.next();
-				if (tok.current() instanceof Double) {
-					double temp = (double) tok.current();
-					Expression exptemp = new Number(temp);
-					Expression exp = new Multiplication(exp1, exptemp);
-					tok.next();
-					if (tok.current() != null && tok.current().equals("+")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Addition(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("-")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Minus(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("*")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Multiplication(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("/")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Divide(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("^")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Power(exp, exp2);
-					} else {
-						return exp;
-					}
-				} else{
-					Expression exp2 = parse(tok, worksheet);
-					return new Multiplication(exp1, exp2);
-				}
-			} else if (tok.current() != null && tok.current().equals("/")) {
-				tok.next();
-				if (tok.current() instanceof Double) {
-					double temp = (double) tok.current();
-					Expression exptemp = new Number(temp);
-					Expression exp = new Divide(exp1, exptemp);
-					tok.next();
-					if (tok.current() != null && tok.current().equals("+")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Addition(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("-")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Minus(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("*")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Multiplication(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("/")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Divide(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("^")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Power(exp, exp2);
-					} else {
-						return exp;
-					}
-				} else{
-					Expression exp2 = parse(tok, worksheet);
-					return new Divide(exp1, exp2);
-				}
-			} else if (tok.current() != null && tok.current().equals("^")) {
-				tok.next();
-				if (tok.current() instanceof Double) {
-					double temp = (double) tok.current();
-					Expression exptemp = new Number(temp);
-					Expression exp = new Power(exp1, exptemp);
-					tok.next();
-					if (tok.current() != null && tok.current().equals("+")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Addition(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("-")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Minus(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("*")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Multiplication(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("/")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Divide(exp, exp2);
-					} else if (tok.current() != null && tok.current().equals("^")) {
-						tok.next();
-						Expression exp2 = parse(tok, worksheet);
-						return new Power(exp, exp2);
-					} else {
-						return exp;
-					}
-				} else{
-					Expression exp2 = parse(tok, worksheet);
-					return new Power(exp1, exp2);
-				}
-			} else {
-				return new CellEle((String) t, worksheet);
-			}
-			
+		} else {
+			double num = (double) t.current();
+			t.next();
+
+			return new Number(num);
+
 		}
-
-		return null;
-
+			
 	}
-
 
 
 }

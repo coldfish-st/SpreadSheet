@@ -21,4 +21,28 @@ public class Divide extends Expression {
 		return "(" + e1.show() + " / " + e2.show() + ")";
 	}
 
+	@Override
+        Expression insertsub(Expression term) {
+	        // TODO Auto-generated method stub
+	        return new Minus(term, this);
+        }
+
+	@Override
+        Expression insertadd(Expression term) {
+	        // TODO Auto-generated method stub
+	        return new Addition(term, this);
+        }
+
+	@Override
+        Expression insertmult(Expression ope) {
+	        // TODO Auto-generated method stub
+	        return new Divide(e1.insertmult(ope), e2);
+        }
+
+	@Override
+        Expression insertdiv(Expression ope) {
+	        // TODO Auto-generated method stub
+	        return new Divide(e1.insertdiv(ope), e2);
+        }
+
 }

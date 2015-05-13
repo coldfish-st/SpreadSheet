@@ -21,4 +21,25 @@ public class Power extends Expression {
 		return "(" + e1.show() + " ^ " + e2.show() + ")";
 	}
 
+	@Override
+        Expression insertsub(Expression term) {
+	       
+	        return new Minus(term, this);
+        }
+	@Override
+        Expression insertadd(Expression term) {
+	        // TODO Auto-generated method stub
+	        return new Addition(term, this);
+        }
+	@Override
+        Expression insertmult(Expression ope) {
+	        // TODO Auto-generated method stub
+	        return new Multiplication(ope, this);
+        }
+	@Override
+        Expression insertdiv(Expression ope) {
+	        // TODO Auto-generated method stub
+	        return new Divide(ope, this);
+        }
+
 }
