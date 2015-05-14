@@ -150,6 +150,19 @@ public class Spreadsheet implements Runnable, ActionListener,
                                 }
 				worksheet.lookup(index).setText(Double.toString(result));
 				expressions.put(index, func);
+				for(CellIndex i: expressions.keySet()) {
+					String exp = expressions.get(i);
+					result = 0;
+					
+					//worksheet.calculate();
+	                                try {
+		                                result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
+	                                } catch (Exception e) {
+		                                // TODO Auto-generated catch block
+		                                e.printStackTrace();
+	                                }
+	                                worksheet.lookup(i).setText(Double.toString(result));
+				}
 				worksheetview.repaint();
 			} else {
 				for(CellIndex i: expressions.keySet()) {
