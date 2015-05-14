@@ -115,7 +115,9 @@ public class WorkSheet {
 		engine.eval("function "+function);
 		Invocable jsInvoke = (Invocable) engine;
 
-		Double result = (Double) jsInvoke.invokeFunction(func, input);
+		double result = (double) jsInvoke.invokeFunction(func, input);
+		//double
+		System.out.println("this is result "+ result);
 		return result;
 
 	}

@@ -43,7 +43,7 @@ public abstract class Expression {
 	 * <exp> ::= <term> | <term> + <exp> | <term> - <exp>
 	 * <term> ::= <ope> | <ope> * <term>  | <ope> / <term>
 	 * <ope> :: = <val> | <val> ^ <ope> | <val> % <ope> 
-	 * <val> ::= <num> |  ( <exp> )
+	 * <val> ::= <num> |  ( (<exp> )
 	 */
 
 	public static Expression parse(Tokenizer t, WorkSheet worksheet) throws Exception {
@@ -124,6 +124,7 @@ public abstract class Expression {
 			String cell = (String) t.current();
 			t.next();
 			return new CellEle(cell, worksheet);
+			
 		} else if (t.current() != null && t.current().equals("e")) {
 			t.next();
 			return new E();
@@ -165,9 +166,10 @@ public abstract class Expression {
 			int count = (jcol+1) * (jrow+1);
 			double[] input = new double[count];
 			int n = icol;
+			int i =0;
 			for (;irow < jrow+1; irow++) {
 				
-				for (int i = 0 ; n < jcol+1; n++) {
+				for ( ; n < jcol+1; n++) {
 					Cell cell =  worksheet.tabledata.get(new CellIndex(n, irow));
 					cell.calcuate(worksheet);
 					input[i] = cell.value();

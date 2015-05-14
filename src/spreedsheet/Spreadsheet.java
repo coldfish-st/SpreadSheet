@@ -37,7 +37,7 @@ public class Spreadsheet implements Runnable, ActionListener,
 	private static final String OPENCOMMAND = "opencommand";
 	private static final String EDITFUNCTIONCOMMAND = "editfunctioncommand";
 	
-	public HashMap<CellIndex, String> functions = new HashMap<CellIndex, String>();
+	public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
 
 	JFrame jframe;
 	WorksheetView worksheetview;
@@ -135,12 +135,13 @@ public class Spreadsheet implements Runnable, ActionListener,
 		} else if (ae.getActionCommand().equals("CALCULATE")) {
 			CellIndex index = worksheetview.getSelectedIndex();
 			String func = cellEditTextField.getText();
-			if (func.startsWith("=SUM")) {
-				System.out.println();
-			} else if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
+			//worksheet.calculate();
+			if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
 				
 				System.out.println(functioneditor.textarea.getText());
 				double result = 0;
+				
+				//worksheet.calculate();
                                 try {
 	                                result = Expression.tokenizeParseShowEvaluate(func, worksheet);
                                 } catch (Exception e) {
@@ -148,9 +149,22 @@ public class Spreadsheet implements Runnable, ActionListener,
 	                                e.printStackTrace();
                                 }
 				worksheet.lookup(index).setText(Double.toString(result));
-				functions.put(index, func);
+				expressions.put(index, func);
 				worksheetview.repaint();
 			} else {
+				for(CellIndex i: expressions.keySet()) {
+					String exp = expressions.get(i);
+					double result = 0;
+					
+					//worksheet.calculate();
+	                                try {
+		                                result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
+	                                } catch (Exception e) {
+		                                // TODO Auto-generated catch block
+		                                e.printStackTrace();
+	                                }
+	                                worksheet.lookup(i).setText(Double.toString(result));
+				}
 				worksheetview.repaint();
 			}
 			//worksheet.lookup(index).calcuate(worksheet);
@@ -175,10 +189,10 @@ public class Spreadsheet implements Runnable, ActionListener,
 		CellIndex index = worksheetview.getSelectedIndex();
 		selectedCellLabel.setText(index.show());
 		
-		if (!functions.containsKey(index)) {
+		if (!expressions.containsKey(index)) {
 			cellEditTextField.setText(worksheet.lookup(index).getText());
 		} else {
-			cellEditTextField.setText(functions.get(index));
+			cellEditTextField.setText(expressions.get(index));
 			
 		}
 		
@@ -223,16 +237,16 @@ public class Spreadsheet implements Runnable, ActionListener,
 		CellIndex index = worksheetview.getSelectedIndex();
 		Cell current = worksheet.lookup(index);
 		
-		if (!functions.containsKey(index)) {
+		if (!expressions.containsKey(index)) {
 			current.setText(cellEditTextField.getText());
 			current.calcuate(worksheet);
 			worksheetview.repaint();
 		} else {
-			String func = functions.get(index);
+			String func = expressions.get(index);
 			current.setText(Double.toString(Expression.tokenizeParseShowEvaluate(func, worksheet)));
 			worksheetview.repaint();
 			if (!cellEditTextField.getText().equals(func)) {
-				functions.remove(index);
+				expressions.remove(index);
 			}
 		}
 		

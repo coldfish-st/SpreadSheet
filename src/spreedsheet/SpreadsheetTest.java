@@ -20,30 +20,8 @@ import org.junit.Test;
 public class SpreadsheetTest  {
 	 
 	protected static final String sumandmaxfunctions = 
-			"SUM(values) {" +
-			"  double sum;" +
-			"  int i;" +
-			"  sum = 0.0;" +
-			"  i = 0;" +
-			"  while (i < values.length) {" +
-			"     sum = sum + values[i];" +
-			"	i++;" +
-			"  }" +
-			"  return sum;" +
-			"}\n" + 
-			"MAX(values) {" +
-			"  double max; " +
-			"  int i;" +
-			"  max = values[0];" +
-			"  i = 1;" +
-			"  while (i < values.length) {" +
-			"     if (values[i] > max) {" +
-			"        max = values[i];" +
-			"     }" +
-			"	i++;" +
-			"  }" +
-			"  return max;" +
-			"}";
+			"SUM(values) { sum = 0.0; i = 0; while (i<values.length) { sum = sum +values[i]; i++; } return sum;}\n"+
+			"MAX(values) { max = values[0];  i = 1; while (i < values.length) {  if (values[i] > max) {  max = values[i]; } i++; }  return max;}";
 	Spreadsheet gui;
 
 	@Test
@@ -106,13 +84,14 @@ public class SpreadsheetTest  {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
+					gui.functioneditor.textarea.setText(sumandmaxfunctions);
+					gui.functioneditor.updateWorksheet();
 					selectAndSet(2, 3, "1.1");
 					selectAndSet(3, 3, "2.2");
 					selectAndSet(4, 3, "3.3");
-					selectAndSet(5, 3, "=SUM(C3:C5)");
-					selectAndSet(6, 3, "=MAX(C3:C5)");
-					gui.functioneditor.textarea.setText(sumandmaxfunctions);
-					gui.functioneditor.updateWorksheet();
+					selectAndSet(5, 3, "= SUM C3 C5");
+					gui.calculateButton.doClick();
+					selectAndSet(6, 3, "= MAX C3 C5");
 					gui.calculateButton.doClick();
 				}
 			});
