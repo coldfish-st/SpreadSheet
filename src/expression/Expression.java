@@ -51,7 +51,7 @@ public abstract class Expression {
 			System.out.println("Test for function begining");
 			t.next();
 		}
-		
+
 		Expression term = parseTerm(t, worksheet);
 		if (t.current() != null && t.current().equals("+")) {
 			t.next();
@@ -109,7 +109,62 @@ public abstract class Expression {
 	}
 
 	public static Expression parseVal(Tokenizer t, WorkSheet worksheet) throws Exception {
-		if (t.current() != null && t.current().equals("-")){
+		
+		if ( t.current() instanceof String &&  ( (String) t.current()).length() > 2    
+				&& Character.isUpperCase(((String) t.current()).charAt(0)) 
+				&& Character.isUpperCase(((String) t.current()).charAt(1))) {
+			
+			String func = (String) t.current();
+			System.out.println("1Test for function begining"+func);
+
+			t.next();
+			System.out.println("2Test for function begining"+t.current());
+			//t.parse("(");
+			t.next();
+			System.out.println("3Test for function begining"+t.current());
+			Expression exp1 = new  CellEle((String) t.current(), worksheet);
+			//t.next();
+			Object test = t.current();
+			CellIndex index1 = new CellIndex((String) test);
+
+
+			t.next();
+			//t.parse(":");
+			System.out.println("3Test for function begining"+t.current());
+			t.next();
+			Expression exp2 = new  CellEle((String) t.current(), worksheet);
+			CellIndex index2 = new CellIndex((String) t.current());
+			t.next();
+
+			int icol = index1.column();
+			int irow = index1.row();
+			int jcol = index2.column();
+			int jrow = index2.row();
+			System.out.println(icol);
+			System.out.println(irow);
+			System.out.println(jcol);
+			System.out.println(jrow);
+			int count = (jcol+1) * (jrow+1);
+			double[] input = new double[count];
+			int n = icol;
+			int i =0;
+			for (;irow < jrow+1; irow++) {
+
+				for ( ; n < jcol+1; n++) {
+					Cell cell =  worksheet.tabledata.get(new CellIndex(n, irow));
+					cell.calcuate(worksheet);
+					input[i] = cell.value();
+					System.out.println("this is  "+ input[i]);
+					i++;
+
+				}
+				n = icol;
+			}
+			t.next();
+			double num = worksheet.scriptFun (func, input);
+			System.out.println("this is aaaa "+ num);
+			return new Number(num);
+		} else if (t.current() != null && t.current().equals("-")){
 			t.next();
 			Expression exp2 = parseVal(t, worksheet);
 			//t.next();
@@ -124,7 +179,7 @@ public abstract class Expression {
 			String cell = (String) t.current();
 			t.next();
 			return new CellEle(cell, worksheet);
-			
+
 		} else if (t.current() != null && t.current().equals("e")) {
 			t.next();
 			return new E();
@@ -133,57 +188,7 @@ public abstract class Expression {
 			t.next();
 			return new Pi();
 
-		} else if ( t.current() instanceof String &&  ( (String) t.current()).length() > 2    && Character.isUpperCase(((String) t.current()).charAt(0))) {
-			String func = (String) t.current();
-			System.out.println("1Test for function begining"+func);
-			
-			t.next();
-			System.out.println("2Test for function begining"+t.current());
-			
-			
-			Expression exp1 = new  CellEle((String) t.current(), worksheet);
-			//t.next();
-			Object test = t.current();
-			
-			
-			CellIndex index1 = new CellIndex((String) test);
-			
-			
-			t.next();
-			System.out.println("3Test for function begining"+t.current());
-			Expression exp2 = new  CellEle((String) t.current(), worksheet);
-			CellIndex index2 = new CellIndex((String) t.current());
-			t.next();
-			
-			int icol = index1.column();
-			int irow = index1.row();
-			int jcol = index2.column();
-			int jrow = index2.row();
-			System.out.println(icol);
-			System.out.println(irow);
-			System.out.println(jcol);
-			System.out.println(jrow);
-			int count = (jcol+1) * (jrow+1);
-			double[] input = new double[count];
-			int n = icol;
-			int i =0;
-			for (;irow < jrow+1; irow++) {
-				
-				for ( ; n < jcol+1; n++) {
-					Cell cell =  worksheet.tabledata.get(new CellIndex(n, irow));
-					cell.calcuate(worksheet);
-					input[i] = cell.value();
-					System.out.println("this is  "+ input[i]);
-					i++;
-					
-				}
-				n = icol;
-			}
-			t.next();
-			double num = worksheet.scriptFun (func, input);
-			System.out.println("this is aaaa "+ num);
-			return new Number(num);
-		} else {
+		}   else {
 			double num = (double) t.current();
 			t.next();
 

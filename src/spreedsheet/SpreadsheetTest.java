@@ -89,9 +89,8 @@ public class SpreadsheetTest  {
 					selectAndSet(2, 3, "1.1");
 					selectAndSet(3, 3, "2.2");
 					selectAndSet(4, 3, "3.3");
-					selectAndSet(5, 3, "= SUM C3 C5");
-					gui.calculateButton.doClick();
-					selectAndSet(6, 3, "= MAX C3 C5");
+					selectAndSet(5, 3, "=SUM(C3:C5)");
+					selectAndSet(6, 3, "=MAX(C3:C5)");
 					gui.calculateButton.doClick();
 				}
 			});
