@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -20,8 +24,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+
+
+
 
 import expression.Expression;
 
@@ -45,10 +55,14 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	private static final String DOLLORCOMMAND = "dollorcommand";
 	private static final String DOUBLECOMMAND = "doublecommand";
 	private static final String BOOLCOMMAND = "boolcommand";
-
+	private static final String SWINGCOMMAND = "swingcommand";
+	private static final String METALCOMMAND = "metalcommand";
+	private static final String NIMBUSCOMMAND = "nimbuscommand";
+	static final String FILENAME = "format.txt";
+	
 	public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
 
-	JFrame jframe;
+	static JFrame jframe;
 	WorksheetView worksheetview;
 	FunctionEditor functioneditor;
 	WorkSheet worksheet;
@@ -61,6 +75,99 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	Cell copyCell = new Cell();
 	
 	public Spreadsheet() {
+		String content = null;
+		File file = new File(FILENAME); 
+		if (file.exists()) {
+			try {
+				FileReader reader = new FileReader(file);
+				char[] chars = new char[(int) file.length()];
+				reader.read(chars);
+				content = new String(chars);
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
+		// If there is no file exists, then it will generate a file which contain "1" representing skin of nimbus.
+		} else {
+			try {
+				FileWriter out_txt = new FileWriter(file);
+				out_txt.write("1");
+				out_txt.close();
+			} catch (IOException e1) {
+				
+				e1.printStackTrace();
+			}
+			try {
+				FileReader reader = new FileReader(file);
+				char[] chars = new char[(int) file.length()];
+				reader.read(chars);
+				content = new String(chars);
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// Read preferences flag from stored file.
+		if (content.equals("1")) {
+			try {
+				try {
+
+					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					
+					e1.printStackTrace();
+				}
+			} catch (UnsupportedLookAndFeelException e1) {
+				
+				e1.printStackTrace();
+			}
+		} else if (content.equals("2")) {
+			try {
+				try {
+
+					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					
+					e1.printStackTrace();
+				}
+			} catch (UnsupportedLookAndFeelException e1) {
+				
+				e1.printStackTrace();
+			}
+		} else if (content.equals("0")){
+			try {
+				try {
+					
+					UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel");			
+				} catch (ClassNotFoundException e1) {
+					
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					
+					e1.printStackTrace();
+				}
+			} catch (UnsupportedLookAndFeelException e1) {
+				
+				e1.printStackTrace();
+			}
+		}
 		SwingUtilities.invokeLater(this);
 	}
 
@@ -96,6 +203,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		makeMenuItem(menu, "Copy", COPYCOMMAND);
 		makeMenuItem(menu, "Cut", CUTCOMMAND);
 		makeMenuItem(menu, "Paste", PASTECOMMAND);
+		
 		menu = new JMenu("Format");
 		bar.add(menu);
 		makeMenuItem(menu, "String", STRINGCOMMAND);
@@ -103,6 +211,13 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		makeMenuItem(menu, "Dollor", DOLLORCOMMAND);
 		makeMenuItem(menu, "Double", DOUBLECOMMAND);
 		makeMenuItem(menu, "Bool", BOOLCOMMAND);
+		
+		menu = new JMenu("Skins");
+		bar.add(menu);
+		makeMenuItem(menu, "Swing", SWINGCOMMAND);
+		makeMenuItem(menu, "Metal", METALCOMMAND);
+		makeMenuItem(menu, "Nimbus", NIMBUSCOMMAND);
+		
 		jframe.setJMenuBar(bar);
 
 
@@ -193,7 +308,97 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		} else if (ae.getActionCommand().equals(EDITFUNCTIONCOMMAND)) {
 			functioneditor.setVisible(true);
 
-		} else if (ae.getActionCommand().equals(STRINGCOMMAND)) {
+		} else if (ae.getActionCommand().equals(SWINGCOMMAND)) {
+			File f_txt =new File(FILENAME);
+			try {
+				FileWriter out_txt = new FileWriter(f_txt);
+				out_txt.write("0");
+				out_txt.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Spreadsheet.jframe.setVisible(false);
+			try {
+				try {
+					UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel");
+
+					
+				} catch (ClassNotFoundException e1) {
+					
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					
+					e1.printStackTrace();
+				}
+			} catch (UnsupportedLookAndFeelException e1) {
+				
+				e1.printStackTrace();
+			}
+			new Spreadsheet();
+
+		}else if (ae.getActionCommand().equals(METALCOMMAND)) {
+			File f_txt =new File(FILENAME);
+			try {
+				FileWriter out_txt = new FileWriter(f_txt);
+				out_txt.write("2");
+				out_txt.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Spreadsheet.jframe.setVisible(false);
+			try {
+				try {
+					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+
+				} catch (ClassNotFoundException e1) {
+					
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					
+					e1.printStackTrace();
+				}
+			} catch (UnsupportedLookAndFeelException e1) {
+				
+				e1.printStackTrace();
+			}
+
+			new Spreadsheet();
+
+		}else if (ae.getActionCommand().equals(NIMBUSCOMMAND)) {
+			File f_txt =new File(FILENAME);
+			try {
+				FileWriter out_txt = new FileWriter(f_txt);
+				out_txt.write("1");
+				out_txt.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Spreadsheet.jframe.setVisible(false);
+			try {
+				try {
+					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+			} catch (UnsupportedLookAndFeelException e1) {
+				e1.printStackTrace();
+			}
+			new Spreadsheet();
+		}
+		else if (ae.getActionCommand().equals(STRINGCOMMAND)) {
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
