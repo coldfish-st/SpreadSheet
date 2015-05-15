@@ -37,6 +37,9 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	private static final String SAVECOMMAND = "savecommand";
 	private static final String OPENCOMMAND = "opencommand";
 	private static final String EDITFUNCTIONCOMMAND = "editfunctioncommand";
+	private static final String COPYCOMMAND = "copycommand";
+	private static final String PASTECOMMAND = "pastecommand";
+	private static final String CUTCOMMAND = "cutcommand";
 	private static final String STRINGCOMMAND = "stringcommand";
 	private static final String PERCENTCOMMAND = "percentcommand";
 	private static final String DOLLORCOMMAND = "dollorcommand";
@@ -55,7 +58,8 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	JLabel selectedCellLabel;
 	JFileChooser filechooser = new JFileChooser();
 	JComboBox<String> multSheet;
-
+	Cell copyCell = new Cell();
+	
 	public Spreadsheet() {
 		SwingUtilities.invokeLater(this);
 	}
@@ -65,6 +69,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	}
 
 	public void run() {
+		
 		jframe = new JFrame("Spreadsheet");
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		worksheet = new WorkSheet();
@@ -88,7 +93,9 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		menu = new JMenu("Edit");
 		bar.add(menu);
 		makeMenuItem(menu, "EditFunction", EDITFUNCTIONCOMMAND);
-
+		makeMenuItem(menu, "Copy", COPYCOMMAND);
+		makeMenuItem(menu, "Cut", CUTCOMMAND);
+		makeMenuItem(menu, "Paste", PASTECOMMAND);
 		menu = new JMenu("Format");
 		bar.add(menu);
 		makeMenuItem(menu, "String", STRINGCOMMAND);
@@ -220,8 +227,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			cell.setText(cell.getText());
 			worksheetChange();
 
-		}   
-		else if (ae.getActionCommand().equals(BOOLCOMMAND)) {
+		}  else if (ae.getActionCommand().equals(BOOLCOMMAND)) {
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
@@ -230,6 +236,28 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			cell.forBool();
 			cell.setText(cell.getText());
 			worksheetChange();
+		} else if (ae.getActionCommand().equals(COPYCOMMAND)) {
+			CellIndex index = worksheetview.getSelectedIndex();
+			copyCell = worksheet.lookup(index);
+			
+		} else if (ae.getActionCommand().equals(CUTCOMMAND)) {
+			CellIndex index = worksheetview.getSelectedIndex();
+			String temp;
+			temp = worksheet.lookup(index).getText();
+			System.out.println("cut  "+ temp);
+			worksheet.lookup(index).setText("");
+			worksheet.lookup(index).forString();
+			cellEditTextField.setText("");
+			copyCell.setText(temp);
+			System.out.println("cut2  "+ copyCell.getText());
+			//worksheet.lookup(index).forString();
+			
+		} else if (ae.getActionCommand().equals(PASTECOMMAND)) {
+			CellIndex index = worksheetview.getSelectedIndex();
+			worksheet.lookup(index).setText(copyCell.getText());
+			cellEditTextField.setText(copyCell.getText());
+			
+			
 		} 
 		else if (ae.getActionCommand().equals("CALCULATE")) {
 
