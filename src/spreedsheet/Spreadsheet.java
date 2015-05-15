@@ -37,6 +37,11 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	private static final String SAVECOMMAND = "savecommand";
 	private static final String OPENCOMMAND = "opencommand";
 	private static final String EDITFUNCTIONCOMMAND = "editfunctioncommand";
+	private static final String STRINGCOMMAND = "stringcommand";
+	private static final String PERCENTCOMMAND = "percentcommand";
+	private static final String DOLLORCOMMAND = "dollorcommand";
+	private static final String DOUBLECOMMAND = "doublecommand";
+	private static final String BOOLCOMMAND = "boolcommand";
 
 	public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
 
@@ -73,15 +78,24 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		// set up the menu bar
 		JMenuBar bar = new JMenuBar();
 		JMenu menu = new JMenu("File");
+
 		bar.add(menu);
 		makeMenuItem(menu, "New", CLEARCOMMAND);
 		makeMenuItem(menu, "Open", OPENCOMMAND);
 		makeMenuItem(menu, "Save", SAVECOMMAND);
 		makeMenuItem(menu, "Exit", EXITCOMMAND);
+
 		menu = new JMenu("Edit");
 		bar.add(menu);
 		makeMenuItem(menu, "EditFunction", EDITFUNCTIONCOMMAND);
 
+		menu = new JMenu("Format");
+		bar.add(menu);
+		makeMenuItem(menu, "String", STRINGCOMMAND);
+		//makeMenuItem(menu, "Percent", PERCENTCOMMAND);
+		makeMenuItem(menu, "Dollor", DOLLORCOMMAND);
+		makeMenuItem(menu, "Double", DOUBLECOMMAND);
+		makeMenuItem(menu, "Bool", BOOLCOMMAND);
 		jframe.setJMenuBar(bar);
 
 
@@ -172,7 +186,53 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		} else if (ae.getActionCommand().equals(EDITFUNCTIONCOMMAND)) {
 			functioneditor.setVisible(true);
 
-		} else if (ae.getActionCommand().equals("CALCULATE")) {
+		} else if (ae.getActionCommand().equals(STRINGCOMMAND)) {
+
+			CellIndex index = worksheetview.getSelectedIndex();
+			Cell cell = worksheet.lookup(index);
+			System.out.println("String "+ cell.getText());
+			cell.removeBool();
+			cell.romoveDollor();
+			cell.forString();
+			cell.setText(cell.getText());
+			worksheetChange();
+
+		} else if (ae.getActionCommand().equals(DOLLORCOMMAND)) {
+
+			CellIndex index = worksheetview.getSelectedIndex();
+			Cell cell = worksheet.lookup(index);
+			System.out.println("dollor  "+ cell.getText());
+			cell.removeBool();
+			cell.forString();
+			cell.forDollor();
+			cell.setText(cell.getText());
+			worksheetChange();
+
+		} else if (ae.getActionCommand().equals(DOUBLECOMMAND)) {
+
+			CellIndex index = worksheetview.getSelectedIndex();
+			Cell cell = worksheet.lookup(index);
+			System.out.println("double  "+ cell.getText());
+			cell.removeBool();
+			//System.out.println("doublebool  "+ cell.getText());
+			cell.romoveDollor();
+			cell.calcuate(worksheet);
+			cell.setText(cell.getText());
+			worksheetChange();
+
+		}   
+		else if (ae.getActionCommand().equals(BOOLCOMMAND)) {
+
+			CellIndex index = worksheetview.getSelectedIndex();
+			Cell cell = worksheet.lookup(index);
+			System.out.println("bool  "+ cell.getText());
+			cell.romoveDollor();
+			cell.forBool();
+			cell.setText(cell.getText());
+			worksheetChange();
+		} 
+		else if (ae.getActionCommand().equals("CALCULATE")) {
+
 			CellIndex index = worksheetview.getSelectedIndex();
 			String func = cellEditTextField.getText();
 			double result = 0;
@@ -203,7 +263,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 						}
 						worksheet.lookup(i).setText(Double.toString(result));
 					}
-					
+
 				}
 				//assign();
 				worksheetview.repaint();
@@ -220,7 +280,8 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
-				*/
+				 */
+				worksheet.tabledata.get(index).calcuate(worksheet);
 				for(CellIndex i: worksheet.tabledata.keySet()) {
 					String exp = worksheet.tabledata.get(i).getText();
 					result = 0;
@@ -234,7 +295,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 						}
 						worksheet.lookup(i).setText(Double.toString(result));
 					}
-					
+
 				}
 				//assign();
 				worksheetview.repaint();
@@ -308,7 +369,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 		if (!expressions.containsKey(index)) {
 			current.setText(cellEditTextField.getText());
-			current.calcuate(worksheet);
+			//current.calcuate(worksheet);
 			worksheetview.repaint();
 		} else {
 			String func = expressions.get(index);
