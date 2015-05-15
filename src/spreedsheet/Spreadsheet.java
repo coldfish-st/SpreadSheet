@@ -245,6 +245,9 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			String temp;
 			temp = worksheet.lookup(index).getText();
 			System.out.println("cut  "+ temp);
+			if (temp.charAt(0) == '=') {
+				expressions.remove(index);
+			}
 			worksheet.lookup(index).setText("");
 			worksheet.lookup(index).forString();
 			cellEditTextField.setText("");
