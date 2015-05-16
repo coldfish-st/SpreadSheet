@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -23,11 +25,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+
+
 
 
 
@@ -192,31 +198,34 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		JMenu menu = new JMenu("File");
 
 		bar.add(menu);
-		makeMenuItem(menu, "New", CLEARCOMMAND);
-		makeMenuItem(menu, "Open", OPENCOMMAND);
-		makeMenuItem(menu, "Save", SAVECOMMAND);
-		makeMenuItem(menu, "Exit", EXITCOMMAND);
+		
+		
+		makeMenuItem(menu, "New", CLEARCOMMAND, 'N');
+		//menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N));
+		makeMenuItem(menu, "Open", OPENCOMMAND, 'O');
+		makeMenuItem(menu, "Save", SAVECOMMAND, 'S');
+		makeMenuItem(menu, "Exit", EXITCOMMAND, 0);
 
 		menu = new JMenu("Edit");
 		bar.add(menu);
-		makeMenuItem(menu, "EditFunction", EDITFUNCTIONCOMMAND);
-		makeMenuItem(menu, "Copy", COPYCOMMAND);
-		makeMenuItem(menu, "Cut", CUTCOMMAND);
-		makeMenuItem(menu, "Paste", PASTECOMMAND);
+		makeMenuItem(menu, "EditFunction", EDITFUNCTIONCOMMAND, 'E');
+		makeMenuItem(menu, "Copy", COPYCOMMAND, 'C');
+		makeMenuItem(menu, "Cut", CUTCOMMAND, 'X');
+		makeMenuItem(menu, "Paste", PASTECOMMAND, 'V');
 		
 		menu = new JMenu("Format");
 		bar.add(menu);
-		makeMenuItem(menu, "String", STRINGCOMMAND);
+		makeMenuItem(menu, "String", STRINGCOMMAND, 0);
 		//makeMenuItem(menu, "Percent", PERCENTCOMMAND);
-		makeMenuItem(menu, "Dollor", DOLLORCOMMAND);
-		makeMenuItem(menu, "Double", DOUBLECOMMAND);
-		makeMenuItem(menu, "Bool", BOOLCOMMAND);
+		makeMenuItem(menu, "Dollor", DOLLORCOMMAND, 0);
+		makeMenuItem(menu, "Double", DOUBLECOMMAND, 0);
+		makeMenuItem(menu, "Bool", BOOLCOMMAND, 0);
 		
 		menu = new JMenu("Skins");
 		bar.add(menu);
-		makeMenuItem(menu, "Swing", SWINGCOMMAND);
-		makeMenuItem(menu, "Metal", METALCOMMAND);
-		makeMenuItem(menu, "Nimbus", NIMBUSCOMMAND);
+		makeMenuItem(menu, "Swing", SWINGCOMMAND, 0);
+		makeMenuItem(menu, "Metal", METALCOMMAND, 0);
+		makeMenuItem(menu, "Nimbus", NIMBUSCOMMAND, 0);
 		
 		jframe.setJMenuBar(bar);
 
@@ -279,9 +288,23 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		jframe.pack();
 	}
 
-	private void makeMenuItem(JMenu menu, String name, String command) {
-		JMenuItem menuitem = new JMenuItem(name);
+	private void makeMenuItem(JMenu menu, String name, String command, int mnemonic) {
+		JMenuItem menuitem;
+		if (mnemonic == 0) {
+			menuitem = new JMenuItem(name);
+		} else {
+			menuitem = new JMenuItem(name, mnemonic);
+			System.out.println("This is the shortcut "+mnemonic);
+			if (mnemonic == 'C' || mnemonic == 'V'  || mnemonic == 'X' ) {
+				menuitem.setAccelerator(KeyStroke.getKeyStroke(mnemonic, InputEvent.ALT_MASK));
+			} else {
+				menuitem.setAccelerator(KeyStroke.getKeyStroke(mnemonic, InputEvent.CTRL_MASK));
+			}
+			
+		}
+		
 		menu.add(menuitem);
+		
 		menuitem.addActionListener(this);
 		menuitem.setActionCommand(command);
 	}

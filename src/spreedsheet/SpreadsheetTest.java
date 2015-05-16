@@ -20,10 +20,26 @@ import org.junit.Test;
 public class SpreadsheetTest  {
 	 
 	protected static final String sumandmaxfunctions = 
-			"SUM(values) { sum = 0.0; i = 0; while (i<values.length) { sum = sum +values[i]; i++; } return sum;}\n"+
-			"MAX(values) { max = values[0];  i = 1; while (i < values.length) {  if (values[i] > max) {  max = values[i]; } i++; }  return max;}";
+			"SUM(values) { "
+			+ "sum = 0.0;"
+			+ " i = 0; "
+			+ "while (i<values.length) {"
+			+ "	 sum = sum +values[i];"
+			+ " 	i++; "
+			+ "}"
+			+ " return sum;"
+			+ "}\n"+
+			"MAX(values) {"
+			+ "	max = values[0];  "
+			+ "	i = 1; "
+			+ "	while (i < values.length) {  "
+			+ "		if (values[i] > max) {  "
+			+ "		max = values[i]; } i++; "
+			+ "	}  "
+			+ "	return max;"
+			+ "}";
 	Spreadsheet gui;
-
+	
 	@Test
 	public void testSimple() {
 		gui = new Spreadsheet();
