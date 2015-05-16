@@ -117,6 +117,7 @@ public class WorkSheet {
 
 		double result = (double) jsInvoke.invokeFunction(func, input);
 		//double
+		System.out.println("this is input length is  "+ input.length);
 		System.out.println("this is result "+ result);
 		return result;
 

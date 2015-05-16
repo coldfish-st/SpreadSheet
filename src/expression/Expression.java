@@ -144,7 +144,7 @@ public abstract class Expression {
 			System.out.println(irow);
 			System.out.println(jcol);
 			System.out.println(jrow);
-			int count = (jcol+1) * (jrow+1);
+			int count = (jcol-icol+1) * (jrow-irow+1);
 			double[] input = new double[count];
 			int n = icol;
 			int i =0;
@@ -161,6 +161,7 @@ public abstract class Expression {
 				n = icol;
 			}
 			t.next();
+			System.out.println("this is input length in expression  is  "+ input.length);
 			double num = worksheet.scriptFun (func, input);
 			System.out.println("this is aaaa "+ num);
 			return new Number(num);

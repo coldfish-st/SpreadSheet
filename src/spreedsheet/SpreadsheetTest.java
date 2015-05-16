@@ -37,6 +37,26 @@ public class SpreadsheetTest  {
 			+ "		max = values[i]; } i++; "
 			+ "	}  "
 			+ "	return max;"
+			+ "}\n"+
+			"MIN(values) {"
+			+ "min = values[0];"
+			+ "i = 1;"
+			+ "while (i < values.length) {"
+			+ "	if (values[i] < min) { "
+			+ "		min = values[i];"
+			+ "	}"
+			+ "	 i++;"
+			+ "}"
+			+ "return min;"
+			+ "}\n"+
+			"AVE(values) { "
+			+ "sum = 0.0; "
+			+ "i = 0; "
+			+ "while (i<values.length) { "
+			+ "	sum = sum +values[i]; "
+			+ "	i++; } "
+			+ "ave = sum / values.length; "
+			+ "return ave;"
 			+ "}";
 	Spreadsheet gui;
 	
@@ -74,9 +94,7 @@ public class SpreadsheetTest  {
 				public void run() {
 					selectAndSet(2, 3, "Some Text");
 					selectAndSet(3, 3, "23.4");
-					//gui.calculateButton.doClick();
 					selectAndSet(4, 3, "34.1");
-					//gui.calculateButton.doClick();
 					selectAndSet(5, 3, "=2.6+C4*C5");
 					gui.calculateButton.doClick();
 				}
@@ -107,6 +125,8 @@ public class SpreadsheetTest  {
 					selectAndSet(4, 3, "3.3");
 					selectAndSet(5, 3, "=SUM(C3:C5)");
 					selectAndSet(6, 3, "=MAX(C3:C5)");
+					selectAndSet(7, 3, "=MIN(C3:C5)");
+					selectAndSet(8, 3, "=AVE(C3:C5)");
 					gui.calculateButton.doClick();
 				}
 			});
@@ -115,6 +135,8 @@ public class SpreadsheetTest  {
 			assertEquals(gui.worksheet.lookup(new CellIndex("C5")).show(), "3.3");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "6.6");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "3.3");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C8")).show(), "1.1");
+			//assertEquals(gui.worksheet.lookup(new CellIndex("C9")).show(), "2.2");
 			
 		} catch (InvocationTargetException e) {
 			
