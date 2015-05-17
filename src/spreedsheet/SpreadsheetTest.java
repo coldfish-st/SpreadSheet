@@ -165,7 +165,7 @@ public class SpreadsheetTest  {
 					selectAndSet(5, 3, "=SUM(C3:C5)");
 					selectAndSet(6, 3, "=MAX(C3:C5)");
 					selectAndSet(7, 3, "=MIN(C3:C5)");
-					//selectAndSet(8, 3, "=AVE(C3:C5)");
+					selectAndSet(8, 3, "=AVE(C3:C5)");
 					gui.calculateButton.doClick();
 					selectAndSet(2, 3, "4.4");
 					gui.calculateButton.doClick();
@@ -177,7 +177,7 @@ public class SpreadsheetTest  {
 			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "9.9");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "4.4");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C8")).show(), "2.2");
-			//assertEquals(gui.worksheet.lookup(new CellIndex("C9")).show(), "2.2");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C9")).show(), "3.3");
 			
 		} catch (InvocationTargetException e) {
 			

@@ -6,6 +6,8 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
+import expression.Arith;
+
 /**
  * WorkSheet - this stores the information for the worksheet. This is made up of
  * all the cells. all the cells of the worksheet.
@@ -119,7 +121,8 @@ public class WorkSheet {
 		//double
 		System.out.println("this is input length is  "+ input.length);
 		System.out.println("this is result "+ result);
-		return result;
+		
+		return Arith.round(result, 9);
 
 	}
 }

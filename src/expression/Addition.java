@@ -14,7 +14,7 @@ public class Addition extends Expression {
 	@Override
         public	double evaluate() {
 		
-		return e1.evaluate() + e2.evaluate();
+		return Arith.add(e1.evaluate(), e2.evaluate()) ;
 	}
 
 	public Addition(Expression e1, Expression e2) {

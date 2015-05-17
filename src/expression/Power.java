@@ -6,7 +6,7 @@ public class Power extends Expression {
 	@Override
 	public double evaluate() {
 		
-		return Math.pow (e1.evaluate(), e2.evaluate())  ;
+		return Arith.round(Math.pow (e1.evaluate(), e2.evaluate()), 9)  ;
 	}
 
 	public Power(Expression e1, Expression e2) {

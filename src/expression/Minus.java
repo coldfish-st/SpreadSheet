@@ -7,7 +7,7 @@ public class Minus extends Expression {
 	@Override
 	public double evaluate() {
 		
-		return e1.evaluate() - e2.evaluate();
+		return Arith.sub(e1.evaluate(), e2.evaluate());
 	}
 
 	public Minus(Expression e1, Expression e2) {

@@ -15,7 +15,7 @@ public class Multiplication extends Expression {
 	@Override
         public 	double evaluate() {
 		
-		return e1.evaluate() * e2.evaluate();
+		return Arith.mul(e1.evaluate(),e2.evaluate() )  ;
 	}
 
 	public Multiplication(Expression e1, Expression e2) {

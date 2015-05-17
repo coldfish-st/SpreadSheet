@@ -6,7 +6,7 @@ public class Divide extends Expression {
 	@Override
 	public double evaluate() {
 		
-		return e1.evaluate() / e2.evaluate();
+		return Arith.div(e1.evaluate(), e2.evaluate())  ;
 	}
 
 	public Divide(Expression e1, Expression e2) {
