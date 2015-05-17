@@ -346,20 +346,14 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			try {
 				try {
 					UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel");
-
-					
 				} catch (ClassNotFoundException e1) {
-					
 					e1.printStackTrace();
 				} catch (InstantiationException e1) {
-					
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-					
 					e1.printStackTrace();
 				}
 			} catch (UnsupportedLookAndFeelException e1) {
-				
 				e1.printStackTrace();
 			}
 			new Spreadsheet();
@@ -475,6 +469,9 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			temp = worksheet.lookup(index).getText();
 			System.out.println("cut  "+ temp);
 			if (temp.charAt(0) == '=') {
+				expressions.remove(index);
+			} 
+			if (expressions.containsKey(index)) {
 				expressions.remove(index);
 			}
 			worksheet.lookup(index).setText("");
