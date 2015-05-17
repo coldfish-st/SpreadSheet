@@ -27,7 +27,7 @@ public abstract class Expression {
     		<constant> ::= e | pi
 	 */
 
-	public static double tokenizeParseShowEvaluate(String text, WorkSheet worksheet) throws Exception {
+	public static double tokenizeParseShowEvaluate(String text, WorkSheet worksheet) throws Exception  {
 		System.out.println(text);
 		Tokenizer t = new SimpleTokenizer(text);
 		System.out.println(t);
@@ -115,13 +115,13 @@ public abstract class Expression {
 				&& Character.isUpperCase(((String) t.current()).charAt(1))) {
 			
 			String func = (String) t.current();
-			System.out.println("1Test for function begining"+func);
+			//System.out.println("1Test for function begining"+func);
 
 			t.next();
-			System.out.println("2Test for function begining"+t.current());
+			//System.out.println("2Test for function begining"+t.current());
 			//t.parse("(");
 			t.next();
-			System.out.println("3Test for function begining"+t.current());
+			//System.out.println("3Test for function begining"+t.current());
 			Expression exp1 = new  CellEle((String) t.current(), worksheet);
 			//t.next();
 			Object test = t.current();
@@ -130,7 +130,7 @@ public abstract class Expression {
 
 			t.next();
 			//t.parse(":");
-			System.out.println("3Test for function begining"+t.current());
+			//System.out.println("3Test for function begining"+t.current());
 			t.next();
 			Expression exp2 = new  CellEle((String) t.current(), worksheet);
 			CellIndex index2 = new CellIndex((String) t.current());
@@ -154,16 +154,16 @@ public abstract class Expression {
 					Cell cell =  worksheet.tabledata.get(new CellIndex(n, irow));
 					cell.calcuate(worksheet);
 					input[i] = cell.value();
-					System.out.println("this is  "+ input[i]);
+					//System.out.println("this is  "+ input[i]);
 					i++;
 
 				}
 				n = icol;
 			}
 			t.next();
-			System.out.println("this is input length in expression  is  "+ input.length);
+			//System.out.println("this is input length in expression  is  "+ input.length);
 			double num = worksheet.scriptFun (func, input);
-			System.out.println("this is aaaa "+ num);
+			//System.out.println("this is aaaa "+ num);
 			return new Number(num);
 		} else if (t.current() != null && t.current().equals("-")){
 			t.next();

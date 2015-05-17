@@ -49,14 +49,19 @@ public class Cell {
 	}
 	
 	public void forDollor() {
-		if (text.charAt(0) != '$' ) {
-			text = "$" +text;
+		if (text.length() > 0) {
+			if (text.charAt(0) != '$' ) {
+				text = "$" +text;
+			}
 		}
+		
 	}
 	
 	public void romoveDollor() {
-		if (text.charAt(0) == '$' ) {
-			text= text.substring(1);
+		if (text.length() > 0) {
+			if (text.charAt(0) == '$' ) {
+				text= text.substring(1);
+			}
 		}
 	}
 	public void forBool() { 

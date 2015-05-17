@@ -96,6 +96,8 @@ public class SpreadsheetTest  {
 					selectAndSet(3, 3, "23.4");
 					selectAndSet(4, 3, "34.1");
 					selectAndSet(5, 3, "=2.6+C4*C5");
+					selectAndSet(6, 3, "=C5+2.0*2^(4-9%6)");
+					selectAndSet(7, 3, "=-(2.6+C4)*(-C5)");
 					gui.calculateButton.doClick();
 				}
 			});
@@ -103,6 +105,8 @@ public class SpreadsheetTest  {
 			assertEquals(gui.worksheet.lookup(new CellIndex("C4")).show(), "23.4");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C5")).show(), "34.1");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "800.54");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "38.1");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C8")).show(), "886.6");
 		} catch (InvocationTargetException e) {
 			fail();
 		} catch (InterruptedException e) {
@@ -136,6 +140,43 @@ public class SpreadsheetTest  {
 			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "6.6");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "3.3");
 			assertEquals(gui.worksheet.lookup(new CellIndex("C8")).show(), "1.1");
+			//assertEquals(gui.worksheet.lookup(new CellIndex("C9")).show(), "2.2");
+			
+		} catch (InvocationTargetException e) {
+			
+			fail();
+		} catch (InterruptedException e) {
+			fail();
+		}
+	}
+	@Test
+	public void testRecalculate() {
+		gui = new Spreadsheet();
+		try {
+
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					gui.functioneditor.textarea.setText(sumandmaxfunctions);
+					gui.functioneditor.updateWorksheet();
+					selectAndSet(2, 3, "1.1");
+					selectAndSet(3, 3, "2.2");
+					selectAndSet(4, 3, "3.3");
+					selectAndSet(5, 3, "=SUM(C3:C5)");
+					selectAndSet(6, 3, "=MAX(C3:C5)");
+					selectAndSet(7, 3, "=MIN(C3:C5)");
+					//selectAndSet(8, 3, "=AVE(C3:C5)");
+					gui.calculateButton.doClick();
+					selectAndSet(2, 3, "4.4");
+					gui.calculateButton.doClick();
+				}
+			});
+			assertEquals(gui.worksheet.lookup(new CellIndex("C3")).show(), "4.4");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C4")).show(), "2.2");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C5")).show(), "3.3");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "9.9");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "4.4");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C8")).show(), "2.2");
 			//assertEquals(gui.worksheet.lookup(new CellIndex("C9")).show(), "2.2");
 			
 		} catch (InvocationTargetException e) {

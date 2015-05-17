@@ -238,6 +238,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		multSheet.addItem("2");
 		multSheet.addItem("3");
 
+		/*
 		multSheet.addActionListener(new ActionListener() {
 
 			@Override
@@ -262,7 +263,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			}
 
 		});
-
+		*/
 		toolarea.add(multSheet);
 		calculateButton = new JButton("Calculate");
 		calculateButton.addActionListener(this);
@@ -524,10 +525,6 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 
 				}
-				//assign();
-				worksheetview.repaint();
-			} else {
-				/*
 				for(CellIndex i: expressions.keySet()) {
 					String exp = expressions.get(i);
 					result = 0;
@@ -539,7 +536,10 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
-				 */
+				//assign();
+				worksheetview.repaint();
+			} else {
+				
 				worksheet.tabledata.get(index).calcuate(worksheet);
 				for(CellIndex i: worksheet.tabledata.keySet()) {
 					String exp = worksheet.tabledata.get(i).getText();
@@ -556,6 +556,19 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 
 				}
+				
+				for(CellIndex i: expressions.keySet()) {
+					String exp = expressions.get(i);
+					result = 0;
+					try {
+						result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
+					} catch (Exception e) {
+
+						e.printStackTrace();
+					}
+					worksheet.lookup(i).setText(Double.toString(result));
+				}
+				 
 				//assign();
 				worksheetview.repaint();
 			}
