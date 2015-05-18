@@ -60,12 +60,14 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	private static final String NIMBUSCOMMAND = "nimbuscommand";
 	static final String FILENAME = "format.txt";
 	
-	Regex regex = new Regex(@ "^\s*[-+]?(((([0-9]\,?[0-9]*)+\.?[0-9]*))+(\s*$|\s*([-+*/]+?|[<>!=]+)\s*))*	(((?<o>\()\s*	[-+]?(((([0-9]\,?[0-9]*)+\.?[0-9]*))+\s*([-+*/]+?|[<>!=]+)\s*)*	)+"
-			+ "((([0-9]\,?[0-9]*)+\.?[0-9]*))" +    
-			"(\s*(?<-o>\))(\s*([-+*/]+?|[<>!=]+)\s*((([0-9]\,?[0-9]*)+\.?[0-9]*))+)*)+(\s*$|\s*([-+*/]+?|[<>!=]+)\s*))*(?(o)(?!))(?<=[0-9)]\s*)\s*$", RegexOptions.IgnorePatternWhitespace);
+	
+	
+	//Regex regex = new Regex(@ "^\s*[-+]?(((([0-9]\,?[0-9]*)+\.?[0-9]*))+(\s*$|\s*([-+*/]+?|[<>!=]+)\s*))*	(((?<o>\()\s*	[-+]?(((([0-9]\,?[0-9]*)+\.?[0-9]*))+\s*([-+*/]+?|[<>!=]+)\s*)*	)+"
+			//+ "((([0-9]\,?[0-9]*)+\.?[0-9]*))" +    
+		//	"(\s*(?<-o>\))(\s*([-+*/]+?|[<>!=]+)\s*((([0-9]\,?[0-9]*)+\.?[0-9]*))+)*)+(\s*$|\s*([-+*/]+?|[<>!=]+)\s*))*(?(o)(?!))(?<=[0-9)]\s*)\s*$", RegexOptions.IgnorePatternWhitespace);
 
 
-							public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
+	public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
 
 	public static JFrame jframe;
 	WorksheetView worksheetview;
@@ -670,12 +672,12 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		}
 	}
 
-	public static boolean CheckExpressionValid(String input)
-	{
-		String pattern = "^(((?<o>\()[-+]?([0-9]+[-+*/])*)+[0-9]+((?<-o>\))([-+*/][0-9]+)*)+($|[-+*/]))*(?(o)(?!))$";    
-		//去掉空格，且添加括号便于进行匹配    
-		return Regex.IsMatch("(" + input.Replace(" ", "") + ")", pattern);
-	}
+	//public static boolean CheckExpressionValid(String input)
+	//{
+	//	String pattern = "^(((?<o>\()[-+]?([0-9]+[-+*/])*)+[0-9]+((?<-o>\))([-+*/][0-9]+)*)+($|[-+*/]))*(?(o)(?!))$";    
+	//	//去掉空格，且添加括号便于进行匹配    
+	//	return Regex.IsMatch("(" + input.Replace(" ", "") + ")", pattern);
+	//}
 
 
 
