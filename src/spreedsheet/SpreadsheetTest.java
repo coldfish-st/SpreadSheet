@@ -186,7 +186,47 @@ public class SpreadsheetTest  {
 			fail();
 		}
 	}
+	/*
+	@Test
+	public void testCopyCutPaste() {
+		gui = new Spreadsheet();
+		try {
 
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					gui.functioneditor.textarea.setText(sumandmaxfunctions);
+					gui.functioneditor.updateWorksheet();
+					selectAndSet(2, 3, "1.1");
+					selectAndSet(3, 3, "2.2");
+					selectAndSet(4, 3, "3.3");
+					selectAndSet(5, 3, "=SUM(C3:C5)");
+					selectAndSet(6, 3, "=MAX(C3:C5)");
+					selectAndSet(7, 3, "=MIN(C3:C5)");
+					selectAndSet(8, 3, "=AVE(C3:C5)");
+					gui.calculateButton.doClick();
+					//gui.bar.do
+					gui.calculateButton.doClick();
+				}
+			});
+			assertEquals(gui.worksheet.lookup(new CellIndex("C3")).show(), "4.4");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C4")).show(), "2.2");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C5")).show(), "3.3");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C6")).show(), "9.9");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C7")).show(), "4.4");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C8")).show(), "2.2");
+			assertEquals(gui.worksheet.lookup(new CellIndex("C9")).show(), "3.3");
+			
+		} catch (InvocationTargetException e) {
+			
+			fail();
+		} catch (InterruptedException e) {
+			fail();
+		}
+	}
+	*/
+	// copy test..........
+	
 	private void selectAndSet(int r, int c, String text) {
 		gui.worksheetview.addRowSelectionInterval(r, r);
 		gui.worksheetview.addColumnSelectionInterval(c, c);

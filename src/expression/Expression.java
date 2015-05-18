@@ -1,7 +1,10 @@
 package expression;
 
+import javax.swing.JOptionPane;
+
 import spreedsheet.Cell;
 import spreedsheet.CellIndex;
+import spreedsheet.Spreadsheet;
 import spreedsheet.WorkSheet;
 
 
@@ -30,9 +33,9 @@ public abstract class Expression {
 	public static double tokenizeParseShowEvaluate(String text, WorkSheet worksheet) throws Exception  {
 		System.out.println(text);
 		Tokenizer t = new SimpleTokenizer(text);
-		System.out.println(t);
+		System.out.println("t "+t);
 		Expression e = Expression.parse(t, worksheet);
-		System.out.println(e);
+		System.out.println("e "+e);
 		return e.evaluate();
 	}
 
@@ -115,22 +118,33 @@ public abstract class Expression {
 				&& Character.isUpperCase(((String) t.current()).charAt(1))) {
 			
 			String func = (String) t.current();
-			//System.out.println("1Test for function begining"+func);
+			
 
 			t.next();
-			//System.out.println("2Test for function begining"+t.current());
-			//t.parse("(");
+			/*
+			if (((String)t.current()) != ":") {
+				JOptionPane.showMessageDialog(Spreadsheet.jframe, "The input synax error on : sign");
+				//return;
+			}
+			*/
 			t.next();
-			//System.out.println("3Test for function begining"+t.current());
-			Expression exp1 = new  CellEle((String) t.current(), worksheet);
-			//t.next();
+			try{
+				CellIndex index = new CellIndex((String) t.current());
+				Expression exp1 = new  CellEle((String) t.current(), worksheet);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(Spreadsheet.jframe, "Expression The input "+(String) t.current()+" has error");
+				//return;
+			}
+			
+			
+			
 			Object test = t.current();
 			CellIndex index1 = new CellIndex((String) test);
 
 
 			t.next();
 			//t.parse(":");
-			//System.out.println("3Test for function begining"+t.current());
+			System.out.println("3Test for function begining"+t.current());
 			t.next();
 			Expression exp2 = new  CellEle((String) t.current(), worksheet);
 			CellIndex index2 = new CellIndex((String) t.current());
@@ -179,6 +193,7 @@ public abstract class Expression {
 				Character.isDigit(((String) t.current()).charAt(1))) {
 			String cell = (String) t.current();
 			t.next();
+			System.out.println("The cell is "+cell);
 			return new CellEle(cell, worksheet);
 
 		} else if (t.current() != null && t.current().equals("e")) {
@@ -189,13 +204,18 @@ public abstract class Expression {
 			t.next();
 			return new Pi();
 
-		}   else {
+		}   else if (t.current() instanceof Double){
 			double num = (double) t.current();
 			t.next();
-
+			System.out.println("test for num "+num);;
 			return new Number(num);
 
+		} else {
+			System.out.println("test for exception");
+			ParseException cell = new ParseException(t.current(), 0);
+			cell.feedback();
 		}
+		return null;
 
 	}
 

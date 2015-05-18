@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.swing.JOptionPane;
 
 import expression.Arith;
 
@@ -100,7 +101,8 @@ public class WorkSheet {
 		tabledata.put(new CellIndex(index), new Cell(text));
 	}
 	
-	public double scriptFun(String func, double[] input) throws Exception {
+	@SuppressWarnings("null")
+        public double scriptFun(String func, double[] input) throws Exception {
 
 		ScriptEngineManager sem = new ScriptEngineManager();
 		ScriptEngine engine = sem.getEngineByName("javascript");
@@ -114,13 +116,22 @@ public class WorkSheet {
 				function =parts[i];
 		}
 		System.out.println(function);
-		engine.eval("function "+function);
-		Invocable jsInvoke = (Invocable) engine;
-
-		double result = (double) jsInvoke.invokeFunction(func, input);
+		double result = 0;
+		try {
+			engine.eval("function "+function);
+			Invocable jsInvoke = (Invocable) engine;
+			result = (double) jsInvoke.invokeFunction(func, input);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be found, please define it first");
+			//return (Double) null;
+		}
+		
+		
+		
+		
 		//double
-		System.out.println("this is input length is  "+ input.length);
-		System.out.println("this is result "+ result);
+		//System.out.println("this is input length is  "+ input.length);
+		//System.out.println("this is result "+ result);
 		
 		return Arith.round(result, 9);
 
