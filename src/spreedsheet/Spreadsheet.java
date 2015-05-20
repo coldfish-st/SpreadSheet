@@ -672,6 +672,8 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		}
 	}
 
+	
+	
 	//public static boolean CheckExpressionValid(String input)
 	//{
 	//	String pattern = "^(((?<o>\()[-+]?([0-9]+[-+*/])*)+[0-9]+((?<-o>\))([-+*/][0-9]+)*)+($|[-+*/]))*(?(o)(?!))$";    

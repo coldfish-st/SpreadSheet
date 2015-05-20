@@ -8,6 +8,7 @@ import javax.script.ScriptEngineManager;
 import javax.swing.JOptionPane;
 
 import expression.Arith;
+import expression.ParseException;
 
 /**
  * WorkSheet - this stores the information for the worksheet. This is made up of
@@ -110,19 +111,23 @@ public class WorkSheet {
 		String funcAll = functions;
 		String[] parts;
 		parts = funcAll.split("\n");
-		String function = null;
+		String function = "";
 		for (int i = 0; i < parts.length; i++) {
 			if ( parts[i].startsWith(func))
 				function =parts[i];
 		}
-		System.out.println(function);
+		if (function.equals("")) {
+			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be found, please define it first");
+			return 0;
+		}
+		System.out.println("The function is " + function);
 		double result = 0;
 		try {
 			engine.eval("function "+function);
 			Invocable jsInvoke = (Invocable) engine;
 			result = (double) jsInvoke.invokeFunction(func, input);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be found, please define it first");
+			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be compile, please check input first");
 			//return (Double) null;
 		}
 		

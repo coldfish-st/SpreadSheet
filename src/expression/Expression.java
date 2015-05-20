@@ -46,7 +46,7 @@ public abstract class Expression {
 	 * <exp> ::= <term> | <term> + <exp> | <term> - <exp>
 	 * <term> ::= <ope> | <ope> * <term>  | <ope> / <term>
 	 * <ope> :: = <val> | <val> ^ <ope> | <val> % <ope> 
-	 * <val> ::= <num> |  ( (<exp> )
+	 * <val> ::= <num> |  ( (<exp> ) | - <exp>
 	 */
 
 	public static Expression parse(Tokenizer t, WorkSheet worksheet) throws Exception {
@@ -113,7 +113,7 @@ public abstract class Expression {
 
 	public static Expression parseVal(Tokenizer t, WorkSheet worksheet) throws Exception {
 		
-		if ( t.current() instanceof String &&  ( (String) t.current()).length() > 2    
+		if ( t.current() instanceof String &&  ( (String) t.current()).length() >= 2   
 				&& Character.isUpperCase(((String) t.current()).charAt(0)) 
 				&& Character.isUpperCase(((String) t.current()).charAt(1))) {
 			
@@ -121,31 +121,44 @@ public abstract class Expression {
 			
 
 			t.next();
-			/*
-			if (((String)t.current()) != ":") {
-				JOptionPane.showMessageDialog(Spreadsheet.jframe, "The input synax error on : sign");
-				//return;
+			// exception for ().
+			if (!((String)t.current()).equals("(")) {
+				ParseException cell = new ParseException(t.current(), 1);  
+				cell.feedback();
+				return null;
 			}
-			*/
+			
 			t.next();
-			try{
-				CellIndex index = new CellIndex((String) t.current());
-				Expression exp1 = new  CellEle((String) t.current(), worksheet);
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(Spreadsheet.jframe, "Expression The input "+(String) t.current()+" has error");
-				//return;
+			// exception for cell index
+			System.out.println("test for cell index "+t.current());
+			if ( !Character.isUpperCase(((String)t.current()).charAt(0)) 
+					|| ((String)t.current()).length() > 2) {
+				ParseException cell = new ParseException(t.current(), 2);  
+				cell.feedback();
+				return null;
 			}
-			
-			
 			
 			Object test = t.current();
 			CellIndex index1 = new CellIndex((String) test);
 
 
 			t.next();
+			// exception for the colon
+			if (!((String)t.current()).equals(":")) {
+				ParseException cell = new ParseException(t.current(), 3);  
+				cell.feedback();
+				return null;
+			}
 			//t.parse(":");
 			System.out.println("3Test for function begining"+t.current());
 			t.next();
+			// test for cell index second part
+			if ( !Character.isUpperCase(((String)t.current()).charAt(0)) 
+					|| ((String)t.current()).length() > 2) {
+				ParseException cell = new ParseException(t.current(), 2);  
+				cell.feedback();
+				return null;
+			}
 			Expression exp2 = new  CellEle((String) t.current(), worksheet);
 			CellIndex index2 = new CellIndex((String) t.current());
 			t.next();
@@ -165,7 +178,13 @@ public abstract class Expression {
 			for (;irow < jrow+1; irow++) {
 
 				for ( ; n < jcol+1; n++) {
-					Cell cell =  worksheet.tabledata.get(new CellIndex(n, irow));
+					CellIndex index =new CellIndex(n, irow);
+					Cell cell =  worksheet.tabledata.get(index);
+					if (cell.getText().equals("")) {
+						ParseException test1 = new ParseException(index.show(), 4);  
+						test1.feedback();
+						return null;
+					}
 					cell.calcuate(worksheet);
 					input[i] = cell.value();
 					//System.out.println("this is  "+ input[i]);
@@ -175,9 +194,9 @@ public abstract class Expression {
 				n = icol;
 			}
 			t.next();
-			//System.out.println("this is input length in expression  is  "+ input.length);
+			System.out.println("this is input length in expression  is  "+ input.length);
 			double num = worksheet.scriptFun (func, input);
-			//System.out.println("this is aaaa "+ num);
+			System.out.println("this is aaaa "+ num);
 			return new Number(num);
 		} else if (t.current() != null && t.current().equals("-")){
 			t.next();

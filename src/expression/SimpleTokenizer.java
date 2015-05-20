@@ -8,7 +8,7 @@ public class SimpleTokenizer extends Tokenizer {
 	private Object current;
 
 	static final char whitespace[] = { ' ', '\n', '\t' };
-	static final char symbol[] = { '(', ')', '-', '/', '^', '*', '+', 'e', 'p',  ',', '=', '%', ':' };
+	static final char symbol[] = { '(', ')', '-', '/', '^', '*', '+', 'e', 'p',  ',', '=', '%', ':'  };
 
 	public SimpleTokenizer(String text) {
 		this.text = text;
