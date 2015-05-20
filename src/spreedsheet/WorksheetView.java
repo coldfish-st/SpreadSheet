@@ -20,7 +20,10 @@ public class WorksheetView extends JTable implements TableModel {
 
 	/** 
 	 * WorksheetView - This is the GUI view of a worksheet.  It builds on and modifies the JTable
-	 * Eric McCreath 2015
+	 * @author Eric McCreath 2015
+	 * 
+	 * Not much change in this class
+	 * @author Zhenge Jia 2015
 	 */
 	private static final long serialVersionUID = 1L;
 

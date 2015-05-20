@@ -1,5 +1,10 @@
 package expression;
 
+/**
+ * An expression for the constant PI
+ * @author Zhenge Jia 2015
+ *
+ */
 
 public class Pi extends Expression {
 
@@ -19,6 +24,7 @@ public class Pi extends Expression {
 	       
 	        return new Minus(term, this);
         }
+	// These methods are created for the order of operations.
 	@Override
         Expression insertadd(Expression term) {
 	        // TODO Auto-generated method stub

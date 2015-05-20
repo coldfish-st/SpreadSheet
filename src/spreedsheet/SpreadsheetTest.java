@@ -15,6 +15,10 @@ import org.junit.Test;
  * 
  * @author Eric McCreath
  * 
+ * There are four methods which are also four cases for the testing.
+ * The recalculation test is added.
+ * @author Zhenge Jia 2015
+ * 
  */
 
 public class SpreadsheetTest  {
@@ -167,6 +171,7 @@ public class SpreadsheetTest  {
 					selectAndSet(7, 3, "=MIN(C3:C5)");
 					selectAndSet(8, 3, "=AVE(C3:C5)");
 					gui.calculateButton.doClick();
+					// Change one value in a cell and recalculate it.
 					selectAndSet(2, 3, "4.4");
 					gui.calculateButton.doClick();
 				}

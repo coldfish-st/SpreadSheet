@@ -41,7 +41,13 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 	private static final Dimension PREFEREDDIM = new Dimension(500, 400);
 	/**
-	 * Spreadsheet - a simple spreadsheet program. Eric McCreath 2015
+	 * Spreadsheet - a simple spreadsheet program. 
+	 * @Eric McCreath 2015
+	 * 
+	 * Modify some components of GUI.
+	 * Add several components to implement functions.
+	 * Implement the calculation and recalculation function for "calculate" button.
+	 * @author Zhenge Jia 2015
 	 */
 
 	private static final String EXITCOMMAND = "exitcommand";
@@ -61,14 +67,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	private static final String METALCOMMAND = "metalcommand";
 	private static final String NIMBUSCOMMAND = "nimbuscommand";
 	static final String FILENAME = "format.txt";
-	
-	
-	
-	//Regex regex = new Regex(@ "^\s*[-+]?(((([0-9]\,?[0-9]*)+\.?[0-9]*))+(\s*$|\s*([-+*/]+?|[<>!=]+)\s*))*	(((?<o>\()\s*	[-+]?(((([0-9]\,?[0-9]*)+\.?[0-9]*))+\s*([-+*/]+?|[<>!=]+)\s*)*	)+"
-			//+ "((([0-9]\,?[0-9]*)+\.?[0-9]*))" +    
-		//	"(\s*(?<-o>\))(\s*([-+*/]+?|[<>!=]+)\s*((([0-9]\,?[0-9]*)+\.?[0-9]*))+)*)+(\s*$|\s*([-+*/]+?|[<>!=]+)\s*))*(?(o)(?!))(?<=[0-9)]\s*)\s*$", RegexOptions.IgnorePatternWhitespace);
-
-
+	// Add one hashmap to store the cell contained expressions.
 	public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
 
 	public static JFrame jframe;
@@ -85,7 +84,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	CellIndex copyCut;
 	JMenuBar bar;
 
-	public Spreadsheet() {
+	public Spreadsheet() { // Enable user to change the style of app and store this preference.
 		String content = null;
 		File file = new File(FILENAME); 
 		if (file.exists()) {
@@ -106,7 +105,6 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 				out_txt.write("1");
 				out_txt.close();
 			} catch (IOException e1) {
-
 				e1.printStackTrace();
 			}
 			try {
@@ -124,58 +122,43 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		if (content.equals("1")) {
 			try {
 				try {
-
 					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 				} catch (ClassNotFoundException e1) {
-
 					e1.printStackTrace();
 				} catch (InstantiationException e1) {
-
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-
 					e1.printStackTrace();
 				}
 			} catch (UnsupportedLookAndFeelException e1) {
-
 				e1.printStackTrace();
 			}
 		} else if (content.equals("2")) {
 			try {
 				try {
-
 					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 				} catch (ClassNotFoundException e1) {
-
 					e1.printStackTrace();
 				} catch (InstantiationException e1) {
-
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-
 					e1.printStackTrace();
 				}
 			} catch (UnsupportedLookAndFeelException e1) {
-
 				e1.printStackTrace();
 			}
 		} else if (content.equals("0")){
 			try {
 				try {
-
 					UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel");			
 				} catch (ClassNotFoundException e1) {
-
 					e1.printStackTrace();
 				} catch (InstantiationException e1) {
-
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-
 					e1.printStackTrace();
 				}
 			} catch (UnsupportedLookAndFeelException e1) {
-
 				e1.printStackTrace();
 			}
 		}
@@ -204,20 +187,22 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 		bar.add(menu);
 
-
+		// set up the accelerator key for some menu items.
 		makeMenuItem(menu, "New", CLEARCOMMAND, 'N');
 		//menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N));
 		makeMenuItem(menu, "Open", OPENCOMMAND, 'O');
 		makeMenuItem(menu, "Save", SAVECOMMAND, 'S');
-		makeMenuItem(menu, "Exit", EXITCOMMAND, 0);
+		makeMenuItem(menu, "Exit", EXITCOMMAND, 'Q');
 
+		// add the copy, cut, paste menus.
 		menu = new JMenu("Edit");
 		bar.add(menu);
 		makeMenuItem(menu, "EditFunction", EDITFUNCTIONCOMMAND, 'E');
 		makeMenuItem(menu, "Copy", COPYCOMMAND, 'C');
 		makeMenuItem(menu, "Cut", CUTCOMMAND, 'X');
 		makeMenuItem(menu, "Paste", PASTECOMMAND, 'V');
-
+		
+		// add the format menus.
 		menu = new JMenu("Format");
 		bar.add(menu);
 		makeMenuItem(menu, "String", STRINGCOMMAND, 0);
@@ -226,6 +211,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		makeMenuItem(menu, "Double", DOUBLECOMMAND, 0);
 		makeMenuItem(menu, "Bool", BOOLCOMMAND, 0);
 
+		// add menus for skins selection.
 		menu = new JMenu("Skins");
 		bar.add(menu);
 		makeMenuItem(menu, "Swing", SWINGCOMMAND, 0);
@@ -243,32 +229,6 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		multSheet.addItem("2");
 		multSheet.addItem("3");
 
-		/*
-		multSheet.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (((String) multSheet.getSelectedItem()).equals("1")) {
-					worksheet = sheet1;
-					worksheetview = new WorksheetView(worksheet);
-					//jframe.getContentPane().add(new JScrollPane(worksheetview), BorderLayout.CENTER);
-					//jframe.getContentPane().add(toolarea, BorderLayout.PAGE_START);
-				} else if (((String) multSheet.getSelectedItem()).equals("2")) {
-					worksheet = sheet2;
-					worksheetview = new WorksheetView(worksheet);
-					//jframe.getContentPane().add(new JScrollPane(worksheetview), BorderLayout.CENTER);
-					//jframe.getContentPane().add(toolarea, BorderLayout.PAGE_START);
-				}else if (((String) multSheet.getSelectedItem()).equals("3")) {
-					worksheet = sheet3;
-					worksheetview = new WorksheetView(worksheet);
-					//sjframe.getContentPane().add(new JScrollPane(worksheetview), BorderLayout.CENTER);
-					//jframe.getContentPane().add(toolarea, BorderLayout.PAGE_START);
-				}
-
-			}
-
-		});
-		 */
 		toolarea.add(multSheet);
 		calculateButton = new JButton("Calculate");
 		calculateButton.addActionListener(this);
@@ -280,14 +240,10 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		cellEditTextField = new JTextField(20);
 		cellEditTextField.getDocument().addDocumentListener(this);
 
-
-
 		toolarea.add(cellEditTextField);
-
 
 		jframe.getContentPane().add(new JScrollPane(worksheetview), BorderLayout.CENTER);
 		jframe.getContentPane().add(toolarea, BorderLayout.PAGE_START);
-
 
 		jframe.setVisible(true);
 		jframe.setPreferredSize(PREFEREDDIM);
@@ -300,17 +256,18 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			menuitem = new JMenuItem(name);
 		} else {
 			menuitem = new JMenuItem(name, mnemonic);
-			System.out.println("This is the shortcut "+mnemonic);
+			// set up the accelerator key for the menu items.
 			if (mnemonic == 'C' || mnemonic == 'V'  || mnemonic == 'X' ) {
+				// The first combo key should be "Alt"
 				menuitem.setAccelerator(KeyStroke.getKeyStroke(mnemonic, InputEvent.ALT_MASK));
 			} else {
+				// The first combo key should be "Ctrl"
 				menuitem.setAccelerator(KeyStroke.getKeyStroke(mnemonic, InputEvent.CTRL_MASK));
 			}
 
 		}
-
 		menu.add(menuitem);
-
+		// enbale the function of each menu and button.
 		menuitem.addActionListener(this);
 		menuitem.setActionCommand(command);
 	}
@@ -337,14 +294,13 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		} else if (ae.getActionCommand().equals(EDITFUNCTIONCOMMAND)) {
 			functioneditor.setVisible(true);
 
-		} else if (ae.getActionCommand().equals(SWINGCOMMAND)) {
+		} else if (ae.getActionCommand().equals(SWINGCOMMAND)) { // change the skin to "Swing" style.
 			File f_txt =new File(FILENAME);
 			try {
 				FileWriter out_txt = new FileWriter(f_txt);
 				out_txt.write("0");
 				out_txt.close();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			Spreadsheet.jframe.setVisible(false);
@@ -363,7 +319,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			}
 			new Spreadsheet();
 
-		}else if (ae.getActionCommand().equals(METALCOMMAND)) {
+		}else if (ae.getActionCommand().equals(METALCOMMAND)) { // change the skin to "Metal" style.
 			File f_txt =new File(FILENAME);
 			try {
 				FileWriter out_txt = new FileWriter(f_txt);
@@ -377,32 +333,25 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			try {
 				try {
 					UIManager.setLookAndFeel( "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-
 				} catch (ClassNotFoundException e1) {
-
 					e1.printStackTrace();
 				} catch (InstantiationException e1) {
-
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-
 					e1.printStackTrace();
 				}
 			} catch (UnsupportedLookAndFeelException e1) {
-
 				e1.printStackTrace();
 			}
-
 			new Spreadsheet();
 
-		}else if (ae.getActionCommand().equals(NIMBUSCOMMAND)) {
+		}else if (ae.getActionCommand().equals(NIMBUSCOMMAND)) {  // change the skin to "Nimbus" style.
 			File f_txt =new File(FILENAME);
 			try {
 				FileWriter out_txt = new FileWriter(f_txt);
 				out_txt.write("1");
 				out_txt.close();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			Spreadsheet.jframe.setVisible(false);
@@ -421,60 +370,61 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			}
 			new Spreadsheet();
 		}
-		else if (ae.getActionCommand().equals(STRINGCOMMAND)) {
+		else if (ae.getActionCommand().equals(STRINGCOMMAND)) { // transfer the format of the selected cell to String
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			System.out.println("String "+ cell.getText());
+			
 			cell.removeBool();
 			cell.romoveDollor();
 			cell.forString();
 			cell.setText(cell.getText());
 			worksheetChange();
 
-		} else if (ae.getActionCommand().equals(DOLLORCOMMAND)) {
+		} else if (ae.getActionCommand().equals(DOLLORCOMMAND)) { // transfer the format of the selected cell to Dollar
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			System.out.println("dollor  "+ cell.getText());
+		
 			cell.removeBool();
 			cell.forString();
 			cell.forDollor();
 			cell.setText(cell.getText());
 			worksheetChange();
 
-		} else if (ae.getActionCommand().equals(DOUBLECOMMAND)) {
+		} else if (ae.getActionCommand().equals(DOUBLECOMMAND)) { // transfer the format of the selected cell to Double
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			System.out.println("double  "+ cell.getText());
+			
 			cell.removeBool();
-			//System.out.println("doublebool  "+ cell.getText());
 			cell.romoveDollor();
 			cell.calcuate(worksheet);
 			cell.setText(cell.getText());
 			worksheetChange();
 
-		}  else if (ae.getActionCommand().equals(BOOLCOMMAND)) {
+		}  else if (ae.getActionCommand().equals(BOOLCOMMAND)) { // transfer the format of the selected cell to Boolean
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			System.out.println("bool  "+ cell.getText());
+			
 			cell.romoveDollor();
 			cell.forBool();
 			cell.setText(cell.getText());
 			worksheetChange();
-		} else if (ae.getActionCommand().equals(COPYCOMMAND)) {
+			
+		} else if (ae.getActionCommand().equals(COPYCOMMAND)) { // Enable the selected cell to be copied.
 			CellIndex index = worksheetview.getSelectedIndex();
+			// store the cell in a variable for paste.
 			copyCut = index;
-			//(worksheetview.getSelectionModel().).setBackground(Color.blue);
 			copyCell = worksheet.lookup(index);
 
-		} else if (ae.getActionCommand().equals(CUTCOMMAND)) {
+		} else if (ae.getActionCommand().equals(CUTCOMMAND)) { // Enable the selected cell to be cut.
+			
 			CellIndex index = worksheetview.getSelectedIndex();
 			String temp;
 			temp = worksheet.lookup(index).getText();
-			System.out.println("cut  "+ temp);
+			// Cut means remove from origin place. It should remove the element stored in hashmap. 
 			if (temp.charAt(0) == '=') {
 				expressions.remove(index);
 			} 
@@ -485,26 +435,22 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			worksheet.lookup(index).forString();
 			cellEditTextField.setText("");
 			copyCell.setText(temp);
-			System.out.println("cut2  "+ copyCell.getText());
-			//worksheet.lookup(index).forString();
+			
 
-		} else if (ae.getActionCommand().equals(PASTECOMMAND)) {
+		} else if (ae.getActionCommand().equals(PASTECOMMAND)) { // Enable the selected cell to be pasted.
+			// Get the value stored in copyCell and assign it to the selected cell.
 			CellIndex index = worksheetview.getSelectedIndex();
 			worksheet.lookup(index).setText(copyCell.getText());
 			cellEditTextField.setText(copyCell.getText());
-
-
 		} 
-		else if (ae.getActionCommand().equals("CALCULATE")) {
+		else if (ae.getActionCommand().equals("CALCULATE")) { // Implement the function of calculation button.
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			String func = cellEditTextField.getText();
 			double result = 0;
 
-			if (func.length() > 1 && func.charAt(0) == '=' ) { //除法这些东西算不算也要加一下情况 0/0
-
-				System.out.println(functioneditor.textarea.getText());
-
+			if (func.length() > 1 && func.charAt(0) == '=' ) {  // do the expression calculation when there starts with '='
+				//  Get the result from tokenizeParseShowEvaluate method.
 				try {
 					result = Expression.tokenizeParseShowEvaluate(func, worksheet);
 				} catch (Exception e) {
@@ -515,7 +461,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 				}
 				worksheet.lookup(index).setText(Double.toString(result));
 				expressions.put(index, func);
-
+				// Recalculate the expressions stored in the whole table.
 				for(CellIndex i: worksheet.tabledata.keySet()) {
 					String exp = worksheet.tabledata.get(i).getText();
 					result = 0;
@@ -531,6 +477,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 
 				}
+				// Recalculate the expressions which invoke values from other expression.
 				for(CellIndex i: expressions.keySet()) {
 					String exp = expressions.get(i);
 					result = 0;
@@ -539,14 +486,13 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 							result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
 						} catch (Exception e) {
 							e.printStackTrace();
-							//JOptionPane.showMessageDialog(Spreadsheet.jframe, "Spread A The function " +exp+" cannot be found, please define it first");
 						}
 					}	
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
-				//assign();
+				
 				worksheetview.repaint();
-			} else {
+			} else { // recalculate the whole table when the selected cell does not contain expression.
 
 				worksheet.tabledata.get(index).calcuate(worksheet);
 				
@@ -558,14 +504,11 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 							expressions.put(i, exp);
 							result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
 						} catch (Exception e) {
-
 							e.printStackTrace();
 						}
 						worksheet.lookup(i).setText(Double.toString(result));
 					}
-
-				}
-				
+				}		
 				for(CellIndex i: expressions.keySet()) {
 					String exp = expressions.get(i);
 					result = 0;
@@ -577,8 +520,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
-				
-				//assign();
+
 				worksheetview.repaint();
 			}
 		}
@@ -598,7 +540,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	public void update() {
 		CellIndex index = worksheetview.getSelectedIndex();
 		selectedCellLabel.setText(index.show());
-
+		// It enables the cellEditTextField print out the expression for the modification.
 		if (!expressions.containsKey(index)) {
 			cellEditTextField.setText(worksheet.lookup(index).getText());
 		} else {
@@ -606,8 +548,6 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 		}
 
-		//cellEditTextField.setText(worksheet.lookup(index).show());
-		assign();
 		jframe.repaint();
 	}
 
@@ -648,25 +588,18 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		CellIndex index = worksheetview.getSelectedIndex();
 		Cell current = worksheet.lookup(index);
 
-		if (!expressions.containsKey(index)) {
+		if (!expressions.containsKey(index)) { // It enbales the cell get the stored expression when re-click it.
+			
 			current.setText(cellEditTextField.getText());
-			//current.calcuate(worksheet);
 			worksheetview.repaint();
-		} else {
+		} else { 								// It enables users to do the modification of cell stored expression.
 			String func = expressions.get(index);
-			//current.setText(Double.toString(Expression.tokenizeParseShowEvaluate(func, worksheet)));
 			worksheetview.repaint();
 			if (!cellEditTextField.getText().equals(func)) {
 				expressions.remove(index);
 			}
 		}	
-		//current.setText(cellEditTextField.getText());
-
-		System.out.println(current.getText());
-		System.out.println("test");
 		worksheetview.repaint();
-		//current.setText(cellEditTextField.getText());
-
 	}
 
 	public void assign() {
@@ -678,16 +611,6 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			sheet3 = worksheet;
 		}
 	}
-
-	
-	
-	//public static boolean CheckExpressionValid(String input)
-	//{
-	//	String pattern = "^(((?<o>\()[-+]?([0-9]+[-+*/])*)+[0-9]+((?<-o>\))([-+*/][0-9]+)*)+($|[-+*/]))*(?(o)(?!))$";    
-	//	//去掉空格，且添加括号便于进行匹配    
-	//	return Regex.IsMatch("(" + input.Replace(" ", "") + ")", pattern);
-	//}
-
 
 
 

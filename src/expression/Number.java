@@ -3,7 +3,7 @@ package expression;
 /**
  * NumExp - an expression for integers. 
  * 
- * @author Eric McCreath
+ * @author Zhenge Jia 2015
  *
  */
 
@@ -28,6 +28,7 @@ public class Number extends Expression {
 		this.num = d;
 	}
 
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	       

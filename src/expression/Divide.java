@@ -1,5 +1,9 @@
 package expression;
-
+/**
+ * An expression for the binary division
+ * @author Zhenge Jia
+ *
+ */
 
 public class Divide extends Expression {
 	Expression e1, e2;
@@ -17,31 +21,32 @@ public class Divide extends Expression {
 	
 	@Override
 	public String show() {
-		// TODO Auto-generated method stub
+		
 		return "(" + e1.show() + " / " + e2.show() + ")";
 	}
 
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
-	        // TODO Auto-generated method stub
+	     
 	        return new Minus(term, this);
         }
 
 	@Override
         Expression insertadd(Expression term) {
-	        // TODO Auto-generated method stub
+	        
 	        return new Addition(term, this);
         }
 
 	@Override
         Expression insertmult(Expression ope) {
-	        // TODO Auto-generated method stub
+	        
 	        return new Divide(e1.insertmult(ope), e2);
         }
 
 	@Override
         Expression insertdiv(Expression ope) {
-	        // TODO Auto-generated method stub
+	        
 	        return new Divide(e1.insertdiv(ope), e2);
         }
 

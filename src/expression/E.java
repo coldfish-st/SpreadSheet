@@ -1,5 +1,10 @@
 package expression;
 
+/**
+ * An expression for the constant e.
+ * @author Zhenge Jia 2015
+ *
+ */
 
 public class E extends Expression {
 
@@ -14,6 +19,7 @@ public class E extends Expression {
 		
 		return " e";
 	}
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	       
@@ -21,17 +27,17 @@ public class E extends Expression {
         }
 	@Override
         Expression insertadd(Expression term) {
-	        // TODO Auto-generated method stub
+	     
 	        return new Addition(term, this);
         }
 	@Override
         Expression insertmult(Expression ope) {
-	        // TODO Auto-generated method stub
+	       
 	        return new Multiplication(ope, this);
         }
 	@Override
         Expression insertdiv(Expression ope) {
-	        // TODO Auto-generated method stub
+	        
 	        return new Divide(ope, this);
         }
 }

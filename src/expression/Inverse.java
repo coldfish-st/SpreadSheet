@@ -1,5 +1,10 @@
 package expression;
 
+/**
+ * An expression for the unary operation inverse.
+ * @author Zhenge Jia 2015
+ *
+ */
 
 public class Inverse extends Expression {
 	Expression e;
@@ -18,6 +23,8 @@ public class Inverse extends Expression {
 		
 		return " - "+e.show();
 	}
+	
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	       

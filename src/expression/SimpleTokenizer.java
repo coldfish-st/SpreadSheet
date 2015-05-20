@@ -1,5 +1,10 @@
 package expression;
 
+/**
+ * This class get the idea from Eric's MySimpleTokenizer.
+ * I just make some modification in the class which enables it to receive more operators.
+ *  @author Zhenge Jia
+ */
 
 public class SimpleTokenizer extends Tokenizer {
 
@@ -8,7 +13,7 @@ public class SimpleTokenizer extends Tokenizer {
 	private Object current;
 
 	static final char whitespace[] = { ' ', '\n', '\t' };
-	static final char symbol[] = { '(', ')', '-', '/', '^', '*', '+', 'e', 'p',  ',', '=', '%', ':'  };
+	static final char symbol[] = { '(', ')', '-', '/', '^', '*', '+', 'e', 'p',  ',', '=', '%', ':'  }; // The symbol[] enables the token read more operators.
 
 	public SimpleTokenizer(String text) {
 		this.text = text;

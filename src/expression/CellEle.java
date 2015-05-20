@@ -1,5 +1,9 @@
 package expression;
 
+/**
+ * This class is created to get the value from the cell index.
+ * @author Zhenge Jia 2015
+ */
 
 import spreedsheet.Cell;
 import spreedsheet.CellIndex;
@@ -17,14 +21,12 @@ public class CellEle extends Expression {
 	}
 	@Override
 	public double evaluate() {
-		//System.out.println(index);
+		
 		CellIndex cellin = new CellIndex(index);
 		
 		Cell cell = worksheet.tabledata.get(cellin);
 		cell.calcuate(worksheet); // used to get the value
-		
-		Double value = cell.value(); // need to calculate?
-		
+		Double value = cell.value(); // need to calculate
 		if (value == null) {
 			value = (double) 0;
 		}
@@ -36,6 +38,7 @@ public class CellEle extends Expression {
 		
 		return "cell";
 	}
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	       

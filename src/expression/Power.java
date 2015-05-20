@@ -1,5 +1,10 @@
 package expression;
 
+/**
+ * An expression for the binary power operation.
+ * @author Zhenge Jia 2015
+ *
+ */
 
 public class Power extends Expression {
 	Expression e1, e2;
@@ -21,6 +26,7 @@ public class Power extends Expression {
 		return "(" + e1.show() + " ^ " + e2.show() + ")";
 	}
 
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	       

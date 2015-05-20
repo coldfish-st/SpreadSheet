@@ -2,9 +2,9 @@ package expression;
 
 
 /**
- * AddExp - an expression for binary addition. 
+ * An expression for binary addition. 
  * 
- * @author Eric McCreath
+ * @author Zhenge Jia 2015
  *
  */
 
@@ -29,6 +29,7 @@ public class Addition extends Expression {
 		return "(" + e1.show() + " + " + e2.show() + ")";
 	}
 
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	        

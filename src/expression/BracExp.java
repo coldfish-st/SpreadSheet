@@ -1,5 +1,10 @@
 package expression;
 
+/**
+ *  An expression for the bracket operations.
+ * @author Zhenge Jia 2015
+ *
+ */
 
 public class BracExp extends Expression {
 	Expression e;
@@ -20,7 +25,7 @@ public class BracExp extends Expression {
 
 		this.e = e;
 	}
-	
+	// These methods are created for the order of operations.
 	@Override
 	Expression insertsub(Expression term) {
 		

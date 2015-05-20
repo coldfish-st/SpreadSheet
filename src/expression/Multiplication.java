@@ -2,9 +2,9 @@ package expression;
 
 
 /**
- * MultExp - an expression for binary multiplication. 
+ * An expression for binary multiplication. 
  * 
- * @author Eric McCreath
+ * @author Zhenge Jia 2015
  *
  */
 
@@ -30,6 +30,7 @@ public class Multiplication extends Expression {
 		return "(" + e1.show() + " * " + e2.show() + ")";
 	}
 
+	// These methods are created for the order of operations.
 	@Override
         Expression insertsub(Expression term) {
 	        // TODO Auto-generated method stub

@@ -14,7 +14,11 @@ import expression.ParseException;
  * WorkSheet - this stores the information for the worksheet. This is made up of
  * all the cells. all the cells of the worksheet.
  * 
- * @author Eric McCreath
+ * @author Eric McCreath 
+ * 
+ * Add the function compiling method for the user-defined functions.
+ * 
+ * @author Zhenge Jia
  * 
  */
 
@@ -102,6 +106,7 @@ public class WorkSheet {
 		tabledata.put(new CellIndex(index), new Cell(text));
 	}
 	
+	// The method get the function in String format and compile it in JavaScript grammar.
 	@SuppressWarnings("deprecation")
         public double scriptFun(String func, double[] input) throws Exception {
 
@@ -110,20 +115,23 @@ public class WorkSheet {
 
 		String funcAll = functions;
 		String[] parts;
-		parts = funcAll.split("\n");
+		
+		parts = funcAll.split("\n");// Split it by the symbol '\n'
 		String function = "";
-		for (int i = 0; i < parts.length; i++) {
+		
+		for (int i = 0; i < parts.length; i++) {// Assign the typed function for compiling.
 			if ( parts[i].startsWith(func))
 				function =parts[i];
 		}
-		if (function.equals("")) {
+		
+		if (function.equals("")) { // Detect the situation where the input function could not be defined.
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be found, please define it first");
 			Thread.currentThread().stop();
 			return 0;
 		}
-		System.out.println("The function is " + function);
+		
 		double result = 0;
-		try {
+		try { // Compile the function using eval() method.
 			engine.eval("function "+function);
 			Invocable jsInvoke = (Invocable) engine;
 			result = (double) jsInvoke.invokeFunction(func, input);

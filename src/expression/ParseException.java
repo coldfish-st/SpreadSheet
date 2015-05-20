@@ -5,8 +5,9 @@ import javax.swing.JOptionPane;
 import spreedsheet.Spreadsheet;
 
 /**
- * 
- * @author Eric McCreath - GPLv2
+ * This class is created to provide useful feedbacks on various syntax errors.
+ * It contains a constructor for ParseException.
+ * @author Zhenge Jia 2015
  */
 
 
@@ -25,24 +26,25 @@ public class ParseException extends Exception {
         }
 	
 	@SuppressWarnings("deprecation")
+	// The method will provide different syntax error messages according to the input int flag.
         public  void feedback() {
-		if (flag == 0) {
+		if (flag == 0) { // for the no logic input
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag0 The input "+e+" has synax error");
 			Thread.currentThread().stop();
 		}
-		if (flag == 1) { // for the () sign
+		if (flag == 1) { // for the '('  and ')' sign
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag1 The input "+e+" has synax error, it should be bracket like '(' or ')' here");
 			Thread.currentThread().stop();
 		}
-		if (flag == 2) { // for the cell index
+		if (flag == 2) { // for the cell index in wrong format
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag2 The input "+e+" has synax error, it should be cell index like 'A1' here");
 			Thread.currentThread().stop();
 		}
-		if (flag == 3) { // for the colon
+		if (flag == 3) { // for the colon in the function call
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag3 The input "+e+" has synax error, it should be colon ':'' here");
 			Thread.currentThread().stop();
 		}
-		if (flag == 4) { // for the cell index value
+		if (flag == 4) { // for the cell index with no value in it
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag4 The input cell "+e+" has no value");
 			Thread.currentThread().stop();
 		}
@@ -50,8 +52,6 @@ public class ParseException extends Exception {
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag5 The input should have only one equal sign for calculation");
 			Thread.currentThread().stop();
 		}
-		
-		//return e;
 	}
 	
 	

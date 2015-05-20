@@ -5,6 +5,11 @@ import expression.Expression;
  * Cell - an object of this class holds the data of a single cell. 
  * 
  * @author Eric McCreath
+ * 
+ * Make a modification of this class. 
+ * Add several methods to enable the cell to be in the various formats.
+ * @author Zhenge Jia 2015
+ * 
  */
 
 public class Cell {
@@ -30,9 +35,6 @@ public class Cell {
 
 	public void calcuate(WorkSheet worksheet) {
 		try {
-						
-			//calculatedValue = Expression.tokenizeParseShowEvaluate(text, worksheet);
-			
 			calculatedValue = Double.parseDouble(text);
 		} catch (NumberFormatException nfe) {
 			calculatedValue = null;
@@ -48,15 +50,15 @@ public class Cell {
 		calculatedValue = null;
 	}
 	
+	// Add the dollar sign for the format
 	public void forDollor() {
 		if (text.length() > 0) {
 			if (text.charAt(0) != '$' ) {
 				text = "$" +text;
 			}
 		}
-		
 	}
-	
+	// Remove the dollar sign for the format
 	public void romoveDollor() {
 		if (text.length() > 0) {
 			if (text.charAt(0) == '$' ) {
@@ -64,9 +66,9 @@ public class Cell {
 			}
 		}
 	}
+	// Transfer the cell into boolean value.
 	public void forBool() { 
 		if ( text != "TRUE" &&  text !="FALSE") {
-			
 			temp = text;
 			if (text == "0") {
 				text = "FALSE";
@@ -76,6 +78,7 @@ public class Cell {
 		} 
 		
 	}
+	// Transfer the cell from boolean value back to true value using a temp variable.
 	public void removeBool() {
 		if (temp != null) {
 			text = temp;
