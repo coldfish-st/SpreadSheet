@@ -45,7 +45,15 @@ public abstract class Expression {
 	 * <val> ::= <num> |  ( (<exp> ) | - <exp>
 	 */
 
-	// This method is for the first level of operations contain '+' and '-'.
+	
+	/**
+	 *  This method is for the first level of operations contain '+' and '-'.
+	 *  It enables the parse method to get into a recursively process.
+	 * @param tokenizer
+	 * @param worksheet
+	 * @return expression
+	 * @throws Exception
+	 */
 	public static Expression parse(Tokenizer t, WorkSheet worksheet) throws Exception {
 
 		// The expression must start with  '=' sign. To begin with, we need to get rid of it.
@@ -72,10 +80,18 @@ public abstract class Expression {
 	abstract Expression insertsub(Expression term);
 	abstract Expression insertadd(Expression term);
 
+	/**
+	 * This method is for the first level of operations contain '*' and '/'.
+	 * Do it recursively to pass the value into parseOpe method. 
+	 * 
+	 * @param tokenizer
+	 * @param worksheet
+	 * @return expression
+	 * @throws Exception
+	 */
 	public static Expression parseTerm(Tokenizer t, WorkSheet worksheet) throws Exception {
 
 		Expression ope = parseOpe(t, worksheet);
-		// Do it recursively to pass the value into parseOpe method. 
 		if (t.current() != null && t.current().equals("*")) {
 			t.next();
 			Expression exp2 = parseTerm(t, worksheet);
@@ -93,6 +109,15 @@ public abstract class Expression {
 	abstract Expression insertmult(Expression ope);
 	abstract Expression insertdiv(Expression ope);
 
+	/**
+	 * This method is for the first level of operations contain '^' and '%'.
+	 * Do it recursively to pass the value into parseOpe method. 
+	 * 
+	 * @param tokenizer
+	 * @param worksheet
+	 * @return expression
+	 * @throws Exception
+	 */
 	public static Expression parseOpe(Tokenizer t, WorkSheet worksheet) throws Exception {
 
 		Expression val = parseVal(t, worksheet);
@@ -111,7 +136,15 @@ public abstract class Expression {
 
 	}
 	
-	// The parseVal will detect the base for all expressions and report the syntax errors. 
+	
+	/**
+	 * The parseVal will detect the base for all expressions and report the syntax errors. 
+	 * The number or error report will be returned,
+	 * @param tokenizer
+	 * @param worksheet
+	 * @return expression
+	 * @throws Exception
+	 */
 	public static Expression parseVal(Tokenizer t, WorkSheet worksheet) throws Exception {
 		
 		// This is the case for function call. 
