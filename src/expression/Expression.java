@@ -134,8 +134,8 @@ public abstract class Expression {
 			t.next();
 			// exception for cell index
 			System.out.println("test for cell index "+t.current());
-			if ( !Character.isUpperCase(((String)t.current()).charAt(0)) 
-					|| ((String)t.current()).length() > 2) {
+			if ( ((String)t.current()).length() > 2 
+					|| !Character.isUpperCase(((String)t.current()).charAt(0)) ) {
 				ParseException cell = new ParseException(t.current(), 2);  
 				cell.feedback();
 				return new Number(0.0);

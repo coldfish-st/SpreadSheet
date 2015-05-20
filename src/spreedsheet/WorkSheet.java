@@ -102,7 +102,8 @@ public class WorkSheet {
 		tabledata.put(new CellIndex(index), new Cell(text));
 	}
 	
-	public double scriptFun(String func, double[] input) throws Exception {
+	@SuppressWarnings("deprecation")
+        public double scriptFun(String func, double[] input) throws Exception {
 
 		ScriptEngineManager sem = new ScriptEngineManager();
 		ScriptEngine engine = sem.getEngineByName("javascript");
@@ -117,6 +118,7 @@ public class WorkSheet {
 		}
 		if (function.equals("")) {
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be found, please define it first");
+			Thread.currentThread().stop();
 			return 0;
 		}
 		System.out.println("The function is " + function);
@@ -127,6 +129,7 @@ public class WorkSheet {
 			result = (double) jsInvoke.invokeFunction(func, input);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be compile, please check input first");
+			Thread.currentThread().stop();
 			return 0;
 		}
 		// Round number
