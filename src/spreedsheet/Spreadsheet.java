@@ -33,7 +33,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.util.regex.*;
+
 import expression.Expression;
+import expression.ParseException;
 
 public class Spreadsheet implements Runnable, ActionListener, SelectionObserver, DocumentListener {
 
@@ -506,8 +508,10 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 				try {
 					result = Expression.tokenizeParseShowEvaluate(func, worksheet);
 				} catch (Exception e) {
-
-					//JOptionPane.showMessageDialog(Spreadsheet.jframe, "The function " +func+" is illegal.");
+					e.printStackTrace();
+					ParseException cell = new ParseException(func, 0);  
+					cell.feedback();
+					
 				}
 				worksheet.lookup(index).setText(Double.toString(result));
 				expressions.put(index, func);
@@ -515,7 +519,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 				for(CellIndex i: worksheet.tabledata.keySet()) {
 					String exp = worksheet.tabledata.get(i).getText();
 					result = 0;
-					if (exp.length() > 1 && exp.charAt(0) == '=') {
+					if (exp.length() > 1 && exp.charAt(0) == '=' ) {
 						try {
 							expressions.put(i, exp);
 							result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
@@ -530,12 +534,14 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 				for(CellIndex i: expressions.keySet()) {
 					String exp = expressions.get(i);
 					result = 0;
-					try {
-						result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
-					} catch (Exception e) {
-
-						//JOptionPane.showMessageDialog(Spreadsheet.jframe, "Spread A The function " +exp+" cannot be found, please define it first");
-					}
+					if (true) {
+						try {
+							result = Expression.tokenizeParseShowEvaluate(exp, worksheet);
+						} catch (Exception e) {
+							e.printStackTrace();
+							//JOptionPane.showMessageDialog(Spreadsheet.jframe, "Spread A The function " +exp+" cannot be found, please define it first");
+						}
+					}	
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
 				//assign();
@@ -543,6 +549,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			} else {
 
 				worksheet.tabledata.get(index).calcuate(worksheet);
+				
 				for(CellIndex i: worksheet.tabledata.keySet()) {
 					String exp = worksheet.tabledata.get(i).getText();
 					result = 0;
@@ -558,7 +565,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 
 				}
-
+				
 				for(CellIndex i: expressions.keySet()) {
 					String exp = expressions.get(i);
 					result = 0;
@@ -570,7 +577,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
-
+				
 				//assign();
 				worksheetview.repaint();
 			}

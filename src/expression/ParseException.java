@@ -24,29 +24,34 @@ public class ParseException extends Exception {
 	        this.flag = flag;
         }
 	
-	public Object feedback() {
-		if (flag == 7) {
+	@SuppressWarnings("deprecation")
+        public  void feedback() {
+		if (flag == 0) {
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag0 The input "+e+" has synax error");
-			return e;
+			Thread.currentThread().stop();
 		}
 		if (flag == 1) { // for the () sign
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag1 The input "+e+" has synax error, it should be bracket like '(' or ')' here");
-			return e;
+			Thread.currentThread().stop();
 		}
 		if (flag == 2) { // for the cell index
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag2 The input "+e+" has synax error, it should be cell index like 'A1' here");
-			return e;
+			Thread.currentThread().stop();
 		}
-		if (flag == 3) { // for the cell index
+		if (flag == 3) { // for the colon
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag3 The input "+e+" has synax error, it should be colon ':'' here");
-			return e;
+			Thread.currentThread().stop();
 		}
-		if (flag == 4) { // for the cell index
+		if (flag == 4) { // for the cell index value
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag4 The input cell "+e+" has no value");
-			return e;
+			Thread.currentThread().stop();
+		}
+		if (flag == 5) { // for the multiple equal sign
+			JOptionPane.showMessageDialog(Spreadsheet.jframe, "flag5 The input should have only one equal sign for calculation");
+			Thread.currentThread().stop();
 		}
 		
-		return e;
+		//return e;
 	}
 	
 	

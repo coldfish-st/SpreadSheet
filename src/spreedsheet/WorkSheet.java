@@ -102,8 +102,7 @@ public class WorkSheet {
 		tabledata.put(new CellIndex(index), new Cell(text));
 	}
 	
-	@SuppressWarnings("null")
-        public double scriptFun(String func, double[] input) throws Exception {
+	public double scriptFun(String func, double[] input) throws Exception {
 
 		ScriptEngineManager sem = new ScriptEngineManager();
 		ScriptEngine engine = sem.getEngineByName("javascript");
@@ -128,16 +127,9 @@ public class WorkSheet {
 			result = (double) jsInvoke.invokeFunction(func, input);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be compile, please check input first");
-			//return (Double) null;
+			return 0;
 		}
-		
-		
-		
-		
-		//double
-		//System.out.println("this is input length is  "+ input.length);
-		//System.out.println("this is result "+ result);
-		
+		// Round number
 		return Arith.round(result, 9);
 
 	}

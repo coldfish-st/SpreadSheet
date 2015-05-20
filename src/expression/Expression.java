@@ -66,6 +66,7 @@ public abstract class Expression {
 			return exp2.insertsub(term);
 
 		} else{
+			System.out.println("The return for parse");
 			return term;
 		}
 
@@ -87,6 +88,7 @@ public abstract class Expression {
 			return exp2.insertdiv(ope);
 
 		} else{
+			System.out.println("The return for Term");
 			return ope;
 		}
 	}
@@ -106,6 +108,7 @@ public abstract class Expression {
 			Expression exp2 = parseOpe(t, worksheet);
 			return new Mod(val, exp2);
 		} else {
+			System.out.println("The return for Ope");
 			return val;
 		}
 
@@ -116,7 +119,7 @@ public abstract class Expression {
 		if ( t.current() instanceof String &&  ( (String) t.current()).length() >= 2   
 				&& Character.isUpperCase(((String) t.current()).charAt(0)) 
 				&& Character.isUpperCase(((String) t.current()).charAt(1))) {
-			
+			System.out.println("This is for the function test");
 			String func = (String) t.current();
 			
 
@@ -125,7 +128,7 @@ public abstract class Expression {
 			if (!((String)t.current()).equals("(")) {
 				ParseException cell = new ParseException(t.current(), 1);  
 				cell.feedback();
-				return null;
+				return new Number(0.0);
 			}
 			
 			t.next();
@@ -135,7 +138,7 @@ public abstract class Expression {
 					|| ((String)t.current()).length() > 2) {
 				ParseException cell = new ParseException(t.current(), 2);  
 				cell.feedback();
-				return null;
+				return new Number(0.0);
 			}
 			
 			Object test = t.current();
@@ -147,7 +150,7 @@ public abstract class Expression {
 			if (!((String)t.current()).equals(":")) {
 				ParseException cell = new ParseException(t.current(), 3);  
 				cell.feedback();
-				return null;
+				return new Number(0.0);
 			}
 			//t.parse(":");
 			System.out.println("3Test for function begining"+t.current());
@@ -157,7 +160,7 @@ public abstract class Expression {
 					|| ((String)t.current()).length() > 2) {
 				ParseException cell = new ParseException(t.current(), 2);  
 				cell.feedback();
-				return null;
+				return new Number(0.0);
 			}
 			Expression exp2 = new  CellEle((String) t.current(), worksheet);
 			CellIndex index2 = new CellIndex((String) t.current());
@@ -183,7 +186,7 @@ public abstract class Expression {
 					if (cell.getText().equals("")) {
 						ParseException test1 = new ParseException(index.show(), 4);  
 						test1.feedback();
-						return null;
+						return new Number(0.0);
 					}
 					cell.calcuate(worksheet);
 					input[i] = cell.value();
@@ -208,8 +211,10 @@ public abstract class Expression {
 			Expression exp2 = parse(t, worksheet);
 			t.next(); // consume the ")" - not we should really check that it is a ")"
 			return new BracExp(exp2);
-		} else if (t.current() instanceof String && Character.isUpperCase(((String) t.current()).charAt(0)) && 
-				Character.isDigit(((String) t.current()).charAt(1))) {
+			
+		} else if (t.current() instanceof String  && ((String) t.current()).length() >1
+				&& Character.isUpperCase(((String) t.current()).charAt(0)) 
+				&&	Character.isDigit(((String) t.current()).charAt(1))) {
 			String cell = (String) t.current();
 			t.next();
 			System.out.println("The cell is "+cell);
@@ -229,12 +234,18 @@ public abstract class Expression {
 			System.out.println("test for num "+num);;
 			return new Number(num);
 
+		} else if (((String)t.current()).equals("=")) {
+			System.out.println("test for equal sign");
+			ParseException cell = new ParseException(t.current(), 5);
+			cell.feedback();
+			return new Number(0.0);
 		} else {
 			System.out.println("test for exception");
 			ParseException cell = new ParseException(t.current(), 0);
 			cell.feedback();
+			return new Number(0.0);
 		}
-		return null;
+		
 
 	}
 
