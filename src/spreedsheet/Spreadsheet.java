@@ -67,6 +67,10 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	private static final String METALCOMMAND = "metalcommand";
 	private static final String NIMBUSCOMMAND = "nimbuscommand";
 	static final String FILENAME = "format.txt";
+	static final String SHEET1 = "SHEET1";
+	static final String SHEET2 = "SHEET2";
+	static final String SHEET3 = "SHEET3";
+	static int flag = 1;
 	// Add one hashmap to store the cell contained expressions.
 	public HashMap<CellIndex, String> expressions = new HashMap<CellIndex, String>();
 
@@ -201,7 +205,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		makeMenuItem(menu, "Copy", COPYCOMMAND, 'C');
 		makeMenuItem(menu, "Cut", CUTCOMMAND, 'X');
 		makeMenuItem(menu, "Paste", PASTECOMMAND, 'V');
-		
+
 		// add the format menus.
 		menu = new JMenu("Format");
 		bar.add(menu);
@@ -228,6 +232,74 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		multSheet.addItem("1");
 		multSheet.addItem("2");
 		multSheet.addItem("3");
+		multSheet.addActionListener(new ActionListener() {
+
+			@SuppressWarnings("static-access")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (multSheet.getSelectedItem() == "1") {
+					
+					// Save the file first
+					if (flag == 1) {
+						File file = new File(SHEET1);
+						worksheet.save(file);
+					} else if (flag == 2) {
+						File file = new File(SHEET2);
+						worksheet.save(file);
+					} else {
+						File file = new File(SHEET3);
+						worksheet.save(file);
+					}
+					
+					File file = new File(SHEET1);
+					worksheet = WorkSheet.load(file);
+					worksheetChange();
+					//worksheetview.repaint();
+					flag = 1;
+				} else if(multSheet.getSelectedItem() == "2") {
+					
+					// Save the file first
+					if (flag == 1) {
+						File file = new File(SHEET1);
+						worksheet.save(file);
+					} else if (flag == 2) {
+						File file = new File(SHEET2);
+						worksheet.save(file);
+					} else {
+						File file = new File(SHEET3);
+						worksheet.save(file);
+					}
+					
+					File file = new File(SHEET2);
+					worksheet = WorkSheet.load(file);
+					worksheetChange();
+					//worksheetview.repaint();
+					flag =2;
+				} else {
+					
+					// Save the file first
+					if (flag == 1) {
+						File file = new File(SHEET1);
+						worksheet.save(file);
+					} else if (flag == 2) {
+						File file = new File(SHEET2);
+						worksheet.save(file);
+					} else {
+						File file = new File(SHEET3);
+						worksheet.save(file);
+					}
+					
+					File file = new File(SHEET3);
+					worksheet = WorkSheet.load(file);
+					worksheetChange();
+					//worksheetview.repaint();
+					flag = 3;
+				}
+
+			}
+
+		});
 
 		toolarea.add(multSheet);
 		calculateButton = new JButton("Calculate");
@@ -276,6 +348,13 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getActionCommand().equals(EXITCOMMAND)) {
+			worksheet = new WorkSheet();
+			File file = new File(SHEET1);
+			worksheet.save(file);
+			file = new File(SHEET2);
+			worksheet.save(file);
+			file = new File(SHEET3);
+			worksheet.save(file);
 			exit();
 		} else if (ae.getActionCommand().equals(SAVECOMMAND)) {
 			int res = filechooser.showOpenDialog(jframe);
@@ -374,7 +453,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			
+
 			cell.removeBool();
 			cell.romoveDollor();
 			cell.forString();
@@ -385,7 +464,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-		
+
 			cell.removeBool();
 			cell.forString();
 			cell.forDollor();
@@ -396,7 +475,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			
+
 			cell.removeBool();
 			cell.romoveDollor();
 			cell.calcuate(worksheet);
@@ -407,12 +486,12 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 			CellIndex index = worksheetview.getSelectedIndex();
 			Cell cell = worksheet.lookup(index);
-			
+
 			cell.romoveDollor();
 			cell.forBool();
 			cell.setText(cell.getText());
 			worksheetChange();
-			
+
 		} else if (ae.getActionCommand().equals(COPYCOMMAND)) { // Enable the selected cell to be copied.
 			CellIndex index = worksheetview.getSelectedIndex();
 			// store the cell in a variable for paste.
@@ -420,7 +499,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			copyCell = worksheet.lookup(index);
 
 		} else if (ae.getActionCommand().equals(CUTCOMMAND)) { // Enable the selected cell to be cut.
-			
+
 			CellIndex index = worksheetview.getSelectedIndex();
 			String temp;
 			temp = worksheet.lookup(index).getText();
@@ -435,7 +514,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 			worksheet.lookup(index).forString();
 			cellEditTextField.setText("");
 			copyCell.setText(temp);
-			
+
 
 		} else if (ae.getActionCommand().equals(PASTECOMMAND)) { // Enable the selected cell to be pasted.
 			// Get the value stored in copyCell and assign it to the selected cell.
@@ -457,7 +536,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					e.printStackTrace();
 					ParseException cell = new ParseException(func, 0);  
 					cell.feedback();
-					
+
 				}
 				worksheet.lookup(index).setText(Double.toString(result));
 				expressions.put(index, func);
@@ -490,12 +569,12 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 					}	
 					worksheet.lookup(i).setText(Double.toString(result));
 				}
-				
+
 				worksheetview.repaint();
 			} else { // recalculate the whole table when the selected cell does not contain expression.
 
 				worksheet.tabledata.get(index).calcuate(worksheet);
-				
+
 				for(CellIndex i: worksheet.tabledata.keySet()) {
 					String exp = worksheet.tabledata.get(i).getText();
 					result = 0;
@@ -589,7 +668,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		Cell current = worksheet.lookup(index);
 
 		if (!expressions.containsKey(index)) { // It enbales the cell get the stored expression when re-click it.
-			
+
 			current.setText(cellEditTextField.getText());
 			worksheetview.repaint();
 		} else { 								// It enables users to do the modification of cell stored expression.
