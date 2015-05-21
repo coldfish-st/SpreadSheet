@@ -236,6 +236,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 
 			@SuppressWarnings("static-access")
 			@Override
+			// Use three file for multiple sheets
 			public void actionPerformed(ActionEvent e) {
 
 				if (multSheet.getSelectedItem() == "1") {
@@ -348,6 +349,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getActionCommand().equals(EXITCOMMAND)) {
+			// Clear the temp file for multiple sheets
 			worksheet = new WorkSheet();
 			File file = new File(SHEET1);
 			worksheet.save(file);
