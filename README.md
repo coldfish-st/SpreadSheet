@@ -20,7 +20,7 @@ x You enable column widths to be modified.
 
 x You enable cells to be copied (with this you may also add absolute and relative cell referencing within expressions).
 
-o Enable multiple sheets.
+x Enable multiple sheets.
 
 x Improve the way recalculation is done.
 
