@@ -136,7 +136,7 @@ public class WorkSheet {
 			Invocable jsInvoke = (Invocable) engine;
 			result = (double) jsInvoke.invokeFunction(func, input);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be compile, please check input first");
+			JOptionPane.showMessageDialog(Spreadsheet.jframe, "Worksheet The function " +func+" cannot be compile, please check input function first");
 			Thread.currentThread().stop();
 			return 0;
 		}

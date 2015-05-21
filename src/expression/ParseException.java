@@ -2,6 +2,7 @@ package expression;
 
 import javax.swing.JOptionPane;
 
+import spreedsheet.CellIndex;
 import spreedsheet.Spreadsheet;
 
 /**
@@ -19,10 +20,12 @@ public class ParseException extends Exception {
         private static final long serialVersionUID = 1L;
 	static Object e;
 	static int flag;
+	static CellIndex index;
 	
 	public ParseException(Object current, int flag) {
 	        this.e = current;
 	        this.flag = flag;
+	        this.index = index;
         }
 	
 	@SuppressWarnings("deprecation")

@@ -1,6 +1,8 @@
 package spreedsheet;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -42,6 +44,42 @@ public class WorksheetView extends JTable implements TableModel {
 		this.setColumnSelectionAllowed(false);
 		this.getColumnModel().getSelectionModel().addListSelectionListener(this);
 		(this.getSelectionModel()).addListSelectionListener(this);
+		
+		this.addMouseListener(new MouseListener() {
+
+			@Override
+                        public void mouseClicked(MouseEvent e) {
+	                        //System.out.println("This is the test for focus in WorksheetView");
+	                        Spreadsheet.cellEditTextField.setFocusable(true);
+	                        Spreadsheet.cellEditTextField.requestFocus();
+	                        
+                        }
+
+			@Override
+                        public void mousePressed(MouseEvent e) {
+	                        // TODO Auto-generated method stub
+	                        
+                        }
+
+			@Override
+                        public void mouseReleased(MouseEvent e) {
+	                        // TODO Auto-generated method stub
+	                        
+                        }
+
+			@Override
+                        public void mouseEntered(MouseEvent e) {
+	                        // TODO Auto-generated method stub
+	                        
+                        }
+
+			@Override
+                        public void mouseExited(MouseEvent e) {
+	                        // TODO Auto-generated method stub
+	                        
+                        }
+			
+		});
 
 		this.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

@@ -76,7 +76,7 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 	WorkSheet worksheet;
 	WorkSheet sheet1, sheet2, sheet3;
 	JButton calculateButton;
-	JTextField cellEditTextField;
+	public static JTextField cellEditTextField;
 	JLabel selectedCellLabel;
 	JFileChooser filechooser = new JFileChooser();
 	JComboBox<String> multSheet;
