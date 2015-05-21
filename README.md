@@ -26,4 +26,4 @@ x Improve the way recalculation is done.
 
 x Extend the function language so you can perform operations on the worksheet.
 
-o Provide helpful feedback to users when their expressions or functions have syntax error.
+x Provide helpful feedback to users when their expressions or functions have syntax error.
