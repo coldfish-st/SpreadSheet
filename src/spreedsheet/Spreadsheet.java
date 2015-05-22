@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -312,6 +313,8 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		calculateButton = new JButton("Calculate");
 		calculateButton.addActionListener(this);
 		calculateButton.setActionCommand("CALCULATE");
+		calculateButton.setMnemonic(KeyEvent.VK_ENTER);
+		//calculateButton.setMnemonic('c');
 		toolarea.add(calculateButton);
 		selectedCellLabel = new JLabel("--");
 		selectedCellLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
