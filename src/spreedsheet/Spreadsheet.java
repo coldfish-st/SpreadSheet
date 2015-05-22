@@ -232,6 +232,12 @@ public class Spreadsheet implements Runnable, ActionListener, SelectionObserver,
 		multSheet.addItem("1");
 		multSheet.addItem("2");
 		multSheet.addItem("3");
+		File file = new File(SHEET1);
+		worksheet.save(file);
+		file = new File(SHEET2);
+		worksheet.save(file);
+		file = new File(SHEET3);
+		worksheet.save(file);
 		multSheet.addActionListener(new ActionListener() {
 
 			@SuppressWarnings("static-access")
